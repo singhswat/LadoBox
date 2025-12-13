@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GiftBox – Login</title>
+
+    <!-- ✅ Correct relative path -->
+    <link rel="stylesheet" href="../css/giftbox.css" />
+</head>
+
+<body class="page">
+
+    <!-- Background matching index.html -->
+    <div class="background"></div>
+
+    <!-- Centered Page Wrapper -->
+    <div class="center-container">
+
+        <!-- LOGIN CARD -->
+        <div class="card login-card">
+
+            <h1 class="card-title">Login</h1>
+            <p class="card-subtitle">Enter your mobile number to get started</p>
+
+            <div class="form-group">
+                <label class="label">Mobile Number</label>
+                <div class="mobile-input">
+                    <span class="country-code">+91</span>
+                    <input id="mobile"
+                           type="text"
+                           placeholder="9876543210"
+                           class="input"
+                           maxlength="10" />
+                </div>
+            </div>
+
+            <button class="btn btn-primary" onclick="sendOtp()">Send OTP</button>
+
+            <p class="footer-text">
+                By continuing, you agree to our<br>
+                <a class="link" href="#">Terms</a> &
+                <a class="link" href="#">Privacy Policy</a>
+            </p>
+
+        </div>
+        <!-- END LOGIN CARD -->
+
+    </div>
+
+    <script>
+        function sendOtp() {
+            const mobile = document.getElementById('mobile').value;
+
+            if (mobile.length !== 10) {
+                alert('Please enter a valid 10-digit mobile number');
+                return;
+            }
+
+            // Save mobile for later use (OTP / dashboard)
+            localStorage.setItem('giftbox_mobile', mobile);
+
+            // Move to OTP screen
+            window.location.href = 'otp.html';
+        }
+    </script>
+
+</body>
+</html>

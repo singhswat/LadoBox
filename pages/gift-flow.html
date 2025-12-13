@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>GiftBox — Create a Gift</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    /* Reset */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #050816;
+      --bg-elevated: #0b1020;
+      --fg: #f7f7ff;
+      --muted: #9ca3af;
+      --accent: #6366f1;
+      --accent-soft: rgba(99, 102, 241, 0.25);
+      --border-subtle: rgba(148, 163, 184, 0.4);
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --radius-pill: 999px;
+      --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.65);
+      --danger: #f97373;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        Roboto, sans-serif;
+      background: radial-gradient(circle at top, #111827 0, #020617 55%);
+      color: var(--fg);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .wrap {
+      max-width: 1020px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Header */
+    header {
+      border-bottom: 1px solid rgba(148, 163, 184, 0.35);
+      backdrop-filter: blur(20px);
+      background: rgba(2, 6, 23, 0.85);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 0;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-mark {
+      width: 26px;
+      height: 26px;
+      border-radius: 10px;
+      background: conic-gradient(from 160deg, #6366f1, #ec4899, #f97316, #22c55e, #6366f1);
+      box-shadow: 0 0 18px rgba(99, 102, 241, 0.8);
+    }
+
+    .logo-text {
+      font-weight: 650;
+      font-size: 18px;
+      letter-spacing: 0.03em;
+    }
+
+    .btn {
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border-subtle);
+      padding: 7px 14px;
+      font-size: 13px;
+      background: transparent;
+      color: var(--fg);
+      cursor: pointer;
+      transition: 0.18s;
+    }
+
+    .btn:hover {
+      background: rgba(15, 23, 42, 0.8);
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #6366f1, #a855f7);
+      border-color: transparent;
+      box-shadow: 0 10px 30px rgba(79, 70, 229, 0.6);
+    }
+
+    /* Stepper */
+    .stepper {
+      padding: 16px 0;
+    }
+
+    .stepper-inner {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .step-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .step-dot {
+      width: 22px;
+      height: 22px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+    }
+
+    .step-badge.active .step-dot {
+      background: linear-gradient(130deg, #a855f7, #6366f1);
+      color: white;
+      border-color: transparent;
+      box-shadow: 0 0 8px rgba(129, 140, 248, 0.8);
+    }
+
+    .step-badge.done .step-dot {
+      background: rgba(22, 163, 74, 0.2);
+      border-color: #22c55e;
+      color: #bbf7d0;
+    }
+
+    .step-line {
+      flex: 1;
+      height: 1px;
+      background: rgba(148, 163, 184, 0.25);
+    }
+
+    /* Main content */
+    main {
+      padding: 26px 0 40px;
+      flex: 1;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 26px;
+    }
+
+    @media (max-width: 880px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Panels */
+    .panel {
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.9), #020617 65%);
+      padding: 20px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .panel-title {
+      font-size: 20px;
+      font-weight: 650;
+      margin-bottom: 6px;
+    }
+
+    .panel-sub {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+
+    /* Gift type cards */
+    .gift-type-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+    }
+
+    .gift-type-card {
+      padding: 14px;
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      background: rgba(15, 23, 42, 0.85);
+      font-size: 13px;
+      color: var(--muted);
+      cursor: pointer;
+      transition: 0.15s;
+    }
+
+    .gift-type-card:hover {
+      border-color: #a855f7;
+      box-shadow: 0 0 12px rgba(129, 140, 248, 0.4);
+    }
+
+    .gift-type-card.selected {
+      border-color: #a855f7;
+      background: rgba(129, 140, 248, 0.15);
+    }
+
+    .gift-type-title {
+      color: #e5e7eb;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    /* Form fields */
+    .form-row {
+      margin-bottom: 12px;
+    }
+
+    label {
+      display: block;
+      font-size: 12px;
+      margin-bottom: 4px;
+      color: #e5e7eb;
+    }
+
+    .input, select, textarea {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 10px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      background: rgba(15, 23, 42, 0.95);
+      color: var(--fg);
+      font-size: 13px;
+    }
+
+    textarea {
+      min-height: 70px;
+    }
+
+    /* Summary panel */
+    .summary-header {
+      font-size: 14px;
+      font-weight: 560;
+      margin-bottom: 8px;
+    }
+
+    .summary-item {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      margin-bottom: 6px;
+      color: var(--muted);
+    }
+
+    .summary-divider {
+      margin: 12px 0;
+      height: 1px;
+      background: rgba(148, 163, 184, 0.25);
+    }
+
+    /* Footer actions */
+    .panel-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 18px;
+    }
+
+    .error-text {
+      font-size: 11px;
+      color: var(--danger);
+      margin: 6px 0;
+      height: 14px;
+    }
+
+    /* Success */
+    .success-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 999px;
+      background: linear-gradient(140deg, #22c55e, #14532d);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 14px;
+      font-size: 22px;
+      box-shadow: 0 0 20px rgba(34, 197, 94, 0.5);
+    }
+
+  </style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- Header -->
+  <header>
+    <div class="wrap nav">
+      <div class="nav-left">
+        <div class="logo-mark"></div>
+        <div class="logo-text">GiftBox</div>
+      </div>
+      <div>
+        <a href="index.html" class="btn">Back to Homepage</a>
+      </div>
+    </div>
+
+    <!-- Stepper -->
+    <div class="wrap stepper">
+      <div class="stepper-inner">
+        <div class="step-badge" data-step-label="1"><div class="step-dot">1</div> Gift Type</div>
+        <div class="step-line"></div>
+        <div class="step-badge" data-step-label="2"><div class="step-dot">2</div> Recipient</div>
+        <div class="step-line"></div>
+        <div class="step-badge" data-step-label="3"><div class="step-dot">3</div> Review</div>
+        <div class="step-line"></div>
+        <div class="step-badge" data-step-label="4"><div class="step-dot">4</div> Done</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main content -->
+  <main>
+    <div class="wrap grid">
+
+      <!-- Step Content -->
+      <section>
+
+        <!-- STEP 1 -->
+        <div class="panel" data-step="1">
+          <h2 class="panel-title">Select your gift</h2>
+          <p class="panel-sub">Choose how you want to gift wealth.</p>
+
+          <div class="gift-type-grid">
+            <div class="gift-type-card selected" data-gift-type="single_stock">
+              <div class="gift-type-title">Single Stock</div>
+              Gift shares of a specific company.
+            </div>
+
+            <div class="gift-type-card" data-gift-type="amount">
+              <div class="gift-type-title">Amount</div>
+              Gift a rupee amount.
+            </div>
+
+            <div class="gift-type-card" data-gift-type="basket">
+              <div class="gift-type-title">Themed Basket</div>
+              Curated collections of stocks.
+            </div>
+
+            <div class="gift-type-card" data-gift-type="sip">
+              <div class="gift-type-title">SIP (Recurring)</div>
+              Monthly investing for long-term growth.
+            </div>
+          </div>
+
+          <div class="form-row">
+            <label>Occasion</label>
+            <input class="input" id="occasion" placeholder="Birthday, festival, graduation..." />
+          </div>
+
+          <div class="form-row">
+            <label>Gift Value (₹)</label>
+            <input class="input" id="budgetRange" type="number" placeholder="5000" />
+          </div>
+
+          <div class="form-row">
+            <label>Message (optional)</label>
+            <textarea id="parentMessage" placeholder="A small step towards your future..."></textarea>
+          </div>
+
+          <div id="error-step1" class="error-text"></div>
+
+          <div class="panel-footer">
+            <div></div>
+            <button class="btn btn-primary" data-next>Next →</button>
+          </div>
+        </div>
+
+        <!-- STEP 2 -->
+        <div class="panel" data-step="2" style="display:none;">
+          <h2 class="panel-title">Recipient details</h2>
+
+          <div class="form-row">
+            <label>Recipient Name</label>
+            <input class="input" id="recipientName" />
+          </div>
+
+          <div class="form-row">
+            <label>Your Relationship</label>
+            <input class="input" id="recipientRelation" placeholder="Son, Daughter, Niece..." />
+          </div>
+
+          <div class="form-row">
+            <label>Recipient Demat ID</label>
+            <input class="input" id="dematId" placeholder="XXXX-YYYY-ZZZZ" />
+          </div>
+
+          <div class="form-row">
+            <label>Preferred Broker (Optional)</label>
+            <select class="input" id="preferredBroker">
+              <option value="">Auto Route</option>
+              <option>Zerodha</option>
+              <option>Groww</option>
+              <option>Upstox</option>
+              <option>ICICI Direct</option>
+              <option>HDFC Sky</option>
+            </select>
+          </div>
+
+          <div id="error-step2" class="error-text"></div>
+
+          <div class="panel-footer">
+            <button class="btn" data-back>← Back</button>
+            <button class="btn btn-primary" data-next>Next →</button>
+          </div>
+        </div>
+
+        <!-- STEP 3 -->
+        <div class="panel" data-step="3" style="display:none;">
+          <h2 class="panel-title">Review your GiftBox</h2>
+
+          <div class="summary-header">Summary</div>
+          <div class="summary-item"><span>Gift Type</span> <span id="summaryGiftType"></span></div>
+          <div class="summary-item"><span>Occasion</span> <span id="summaryOccasion"></span></div>
+          <div class="summary-item"><span>Value</span> <span id="summaryBudget"></span></div>
+          <div class="summary-item"><span>Recipient</span> <span id="summaryRecipient"></span></div>
+          <div class="summary-item"><span>Demat</span> <span id="summaryDemat"></span></div>
+          <div class="summary-item"><span>Broker</span> <span id="summaryBroker"></span></div>
+
+          <div class="summary-divider"></div>
+          <div class="summary-header">Message</div>
+          <p id="summaryMessage" class="summary-note"></p>
+
+          <div id="error-step3" class="error-text"></div>
+
+          <div class="panel-footer">
+            <button class="btn" data-back>← Back</button>
+            <button class="btn btn-primary" id="confirmGiftBtn">Confirm Gift</button>
+          </div>
+        </div>
+
+        <!-- STEP 4 -->
+        <div class="panel" data-step="4" style="display:none;text-align:center;">
+          <div class="success-icon">✓</div>
+          <h2 style="margin-bottom:4px;">Gift Created Successfully</h2>
+          <p style="color:var(--muted);margin-bottom:20px;">
+            Your gift has been submitted to a regulated broker for demat-to-demat transfer.
+          </p>
+
+          <a class="btn btn-primary" href="gift-flow.html">Create Another Gift</a>
+          <a class="btn" href="index.html">Back to Homepage</a>
+        </div>
+
+      </section>
+
+      <!-- Right Side Summary -->
+      <aside>
+        <div class="panel">
+          <div class="summary-header">Live Preview</div>
+          <div class="summary-item"><span>Gift Type</span> <span id="liveGiftType">Single Stock</span></div>
+          <div class="summary-item"><span>Occasion</span> <span id="liveOccasion">–</span></div>
+          <div class="summary-item"><span>Budget</span> <span id="liveBudget">–</span></div>
+          <div class="summary-item"><span>Recipient</span> <span id="liveRecipient">–</span></div>
+          <div class="summary-item"><span>Demat</span> <span id="liveDemat">–</span></div>
+          <div class="summary-item"><span>Broker</span> <span id="liveBroker">Auto Route</span></div>
+        </div>
+      </aside>
+
+    </div>
+  </main>
+</div>
+
+<script>
+(function () {
+  let currentStep = 1;
+
+  const steps = document.querySelectorAll('[data-step]');
+  const badges = document.querySelectorAll('.step-badge');
+
+  function showStep(n) {
+    currentStep = n;
+    steps.forEach(s => s.style.display = s.dataset.step == n ? 'block' : 'none');
+    badges.forEach(b => {
+      const num = Number(b.dataset.stepLabel);
+      b.classList.remove('active', 'done');
+      if (num === n) b.classList.add('active');
+      else if (num < n) b.classList.add('done');
+    });
+  }
+
+  document.querySelectorAll('[data-next]').forEach(btn =>
+    btn.addEventListener('click', () => {
+      if (currentStep === 1 && !validateStep1()) return;
+      if (currentStep === 2 && !validateStep2()) return;
+      showStep(currentStep + 1);
+      syncSummary();
+    })
+  );
+
+  document.querySelectorAll('[data-back]').forEach(btn =>
+    btn.addEventListener('click', () => showStep(currentStep - 1))
+  );
+
+  // Gift type
+  let selectedGiftType = "Single Stock";
+  document.querySelectorAll('.gift-type-card').forEach(card => {
+    card.addEventListener('click', () => {
+      document.querySelectorAll('.gift-type-card').forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+      selectedGiftType = card.querySelector('.gift-type-title').textContent;
+      document.getElementById('liveGiftType').textContent = selectedGiftType;
+    });
+  });
+
+  // Field References
+  const occasion = document.getElementById('occasion');
+  const budget = document.getElementById('budgetRange');
+  const msg = document.getElementById('parentMessage');
+  const rec = document.getElementById('recipientName');
+  const rel = document.getElementById('recipientRelation');
+  const demat = document.getElementById('dematId');
+  const broker = document.getElementById('preferredBroker');
+
+  // Sync live preview
+  function syncPreview() {
+    document.getElementById('liveOccasion').textContent = occasion.value || "–";
+    document.getElementById('liveBudget').textContent = budget.value ? "₹" + budget.value : "–";
+    document.getElementById('liveRecipient').textContent = rec.value || "–";
+    document.getElementById('liveDemat').textContent = demat.value || "–";
+    document.getElementById('liveBroker').textContent = broker.value || "Auto Route";
+  }
+
+  [occasion, budget, msg, rec, rel, demat, broker].forEach(el => {
+    el.addEventListener('input', syncPreview);
+  });
+
+  // Validation
+  function validateStep1() {
+    const error = document.getElementById('error-step1');
+    if (!budget.value) {
+      error.textContent = "Please enter a gift value.";
+      return false;
+    }
+    error.textContent = "";
+    return true;
+  }
+
+  function validateStep2() {
+    const error = document.getElementById('error-step2');
+    if (!rec.value) {
+      error.textContent = "Please enter recipient name.";
+      return false;
+    }
+    if (!demat.value) {
+      error.textContent = "Please enter demat ID.";
+      return false;
+    }
+    error.textContent = "";
+    return true;
+  }
+
+  function syncSummary() {
+    document.getElementById('summaryGiftType').textContent = selectedGiftType;
+    document.getElementById('summaryOccasion').textContent = occasion.value || "–";
+    document.getElementById('summaryBudget').textContent = budget.value ? "₹" + budget.value : "–";
+    document.getElementById('summaryRecipient').textContent = rec.value + (rel.value ? " (" + rel.value + ")" : "");
+    document.getElementById('summaryDemat').textContent = demat.value;
+    document.getElementById('summaryBroker').textContent = broker.value || "Auto Route";
+    document.getElementById('summaryMessage').textContent = msg.value || "No message added.";
+  }
+
+  // Confirm Gift
+  document.getElementById('confirmGiftBtn').addEventListener('click', () => {
+    showStep(4);
+  });
+
+})();
+</script>
+
+</body>
+</html>
