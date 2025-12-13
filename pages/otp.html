@@ -6,15 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="../css/giftbox.css">
 </head>
+
 <body class="auth-page">
 
     <div class="auth-card">
         <h1>Verify OTP</h1>
-        <p>Enter the 6-digit OTP sent to your mobile number.</p>
+
+        <p id="otpText">
+            Enter the 6-digit OTP sent to your mobile number.
+        </p>
 
         <input type="text"
                id="otp"
                maxlength="6"
+               inputmode="numeric"
+               pattern="[0-9]*"
                placeholder="Enter OTP"
                class="auth-input">
 
@@ -28,18 +34,28 @@
     </div>
 
     <script>
-  function verifyOtp() {
-    const otp = document.getElementById('otp').value;
+        // Show masked mobile number (nice UX)
+        const mobile = localStorage.getItem('giftbox_mobile');
+        if (mobile) {
+            const masked = mobile.replace(/(\d{2})\d{6}(\d{2})/, '$1******$2');
+            document.getElementById('otpText').innerText =
+                `Enter the 6-digit OTP sent to +91 ${masked}`;
+        }
 
-    if (otp.length !== 6) {
-      alert('Please enter a valid 6-digit OTP');
-      return;
-    }
+        function verifyOtp() {
+            const otp = document.getElementById('otp').value;
 
-    // Fake success
-    localStorage.setItem('giftbox_logged_in', 'true');
-    window.location.href = 'gift-flow.html';
-  }
+            if (!/^\d{6}$/.test(otp)) {
+                alert('Please enter a valid 6-digit OTP');
+                return;
+            }
+
+            // Fake success for MVP
+            localStorage.setItem('giftbox_logged_in', 'true');
+
+            // Go to next step in MVP
+            window.location.href = 'gift-flow.html';
+        }
     </script>
 
 </body>

@@ -1,0 +1,33 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gift Link — GiftBox</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../css/giftbox.css">
+</head>
+
+<body class="page">
+    <div class="center-container">
+
+        <div class="card">
+            <h1>🎁 Gift Link Created</h1>
+
+            <p>Share this link with the recipient:</p>
+            <input class="input" value="https://giftbox.app/gift/ABC123" readonly>
+
+            <button class="btn btn-primary" onclick="dashboard()">
+                Go to Dashboard
+            </button>
+        </div>
+
+    </div>
+
+    <script>
+  function dashboard() {
+    window.location.href = 'dashboard.html';
+  }
+    </script>
+
+</body>
+</html>
