@@ -221,12 +221,24 @@
         }
 
         function nextStep() {
-            const amt = document.getElementById("amount").value;
-            if (!amt) {
-                showToast("Please enter a gift amount to continue.");
-                return;
+            function nextStep() {
+                const amount = document.getElementById("amount").value;
+
+                if (!amount || amount <= 0) {
+                    showToast("Please enter a valid amount");
+                    return;
+                }
+
+                // Save minimal MVP data
+                localStorage.setItem("giftbox_gift", JSON.stringify({
+                    type: "Amount",
+                    amount: amount
+                }));
+
+                // Go to review screen
+                window.location.href = "gift-review.html";
             }
-            showToast("Gift amount saved. Next step coming soon.");
+
         }
     </script>
 

@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Review Gift — GiftBox</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="../css/giftbox.css" />
+</head>
+<body>
+
+    <div class="page">
+        <header>
+            <div class="wrap nav">
+                <div class="nav-left">
+                    <div class="logo-mark"></div>
+                    <div class="logo-text">GiftBox</div>
+                </div>
+                <a href="gift-flow.html" class="btn">← Edit Gift</a>
+            </div>
+        </header>
+
+        <main class="wrap" style="max-width:720px;padding:40px 20px;">
+            <div class="panel">
+                <h2 class="panel-title">Review your Gift</h2>
+                <p class="panel-sub">Please confirm the details before proceeding.</p>
+
+                <div class="summary-item"><span>Gift Type</span><strong id="rType"></strong></div>
+                <div class="summary-item"><span>Amount</span><strong id="rAmount"></strong></div>
+                <div class="summary-item"><span>Occasion</span><strong id="rOccasion"></strong></div>
+                <div class="summary-item"><span>Recipient</span><strong id="rRecipient"></strong></div>
+                <div class="summary-item"><span>Demat ID</span><strong id="rDemat"></strong></div>
+                <div class="summary-item"><span>Broker</span><strong id="rBroker"></strong></div>
+
+                <div class="summary-divider"></div>
+                <p id="rMessage" style="color:var(--muted);font-size:13px;"></p>
+
+                <div class="panel-footer">
+                    <button class="btn" onclick="history.back()">← Back</button>
+                    <button class="btn btn-primary" onclick="confirmGift()">Confirm Gift</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+  const gift = JSON.parse(localStorage.getItem("giftbox_gift"));
+
+  if (!gift) {
+    window.location.href = "gift-flow.html";
+  }
+
+  document.getElementById("rType").textContent = gift.type;
+  document.getElementById("rAmount").textContent = "₹" + gift.amount;
+  document.getElementById("rOccasion").textContent = gift.occasion || "—";
+  document.getElementById("rRecipient").textContent = gift.recipient + (gift.relation ? " (" + gift.relation + ")" : "");
+  document.getElementById("rDemat").textContent = gift.demat;
+  document.getElementById("rBroker").textContent = gift.broker;
+  document.getElementById("rMessage").textContent = gift.message || "No message added.";
+
+  function confirmGift() {
+    localStorage.setItem("giftbox_confirmed", "true");
+    window.location.href = "gift-success.html";
+  }
+    </script>
+
+</body>
+</html>
