@@ -19,7 +19,6 @@
             --muted: #9ca3af;
             --border: rgba(148,163,184,.35);
             --accent: #6366f1;
-            --success: #22c55e;
         }
 
         body {
@@ -187,7 +186,6 @@
             <h2>Create your gift</h2>
             <p>For MVP, only amount-based gifting is available.</p>
 
-            <!-- Gift Types -->
             <div class="gift-types">
                 <div class="gift-card disabled" onclick="comingSoon()">Single Stock</div>
                 <div class="gift-card active">Amount</div>
@@ -195,9 +193,8 @@
                 <div class="gift-card disabled" onclick="comingSoon()">SIP (Recurring)</div>
             </div>
 
-            <!-- Amount -->
             <label>Gift Amount (₹)</label>
-            <input type="number" id="amount" placeholder="5000">
+            <input type="number" id="amount" placeholder="5000" />
 
             <div class="actions">
                 <button class="btn btn-primary" onclick="nextStep()">Next →</button>
@@ -213,7 +210,7 @@
             const t = document.getElementById("toast");
             t.textContent = msg;
             t.classList.add("show");
-            setTimeout(() => t.classList.remove("show"), 3000);
+            setTimeout(() => t.classList.remove("show"), 2500);
         }
 
         function comingSoon() {
@@ -221,24 +218,19 @@
         }
 
         function nextStep() {
-            function nextStep() {
-                const amount = document.getElementById("amount").value;
+            const amount = document.getElementById("amount").value;
 
-                if (!amount || amount <= 0) {
-                    showToast("Please enter a valid amount");
-                    return;
-                }
-
-                // Save minimal MVP data
-                localStorage.setItem("giftbox_gift", JSON.stringify({
-                    type: "Amount",
-                    amount: amount
-                }));
-
-                // Go to review screen
-                window.location.href = "gift-review.html";
+            if (!amount || amount <= 0) {
+                showToast("Please enter a valid amount");
+                return;
             }
 
+            localStorage.setItem("giftbox_gift", JSON.stringify({
+                type: "Amount",
+                amount: amount
+            }));
+
+            window.location.href = "gift-review.html";
         }
     </script>
 
