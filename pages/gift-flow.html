@@ -18,117 +18,70 @@
             --fg: #f7f7ff;
             --muted: #9ca3af;
             --border: rgba(148,163,184,.35);
-            --radius: 14px;
-            --gold1: #f5c542;
-            --gold2: #e6a700;
+            --accent: #6366f1;
+            --success: #22c55e;
         }
 
         body {
             font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-            background: radial-gradient(circle at top,#111827 0,#020617 55%);
+            background: radial-gradient(circle at top, #111827 0, #020617 55%);
             color: var(--fg);
+            min-height: 100vh;
         }
 
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-
+        /* ================= LAYOUT ================= */
         .wrap {
-            max-width: 960px;
-            margin: auto;
-            padding: 0 20px;
+            max-width: 920px;
+            margin: 0 auto;
+            padding: 20px;
         }
 
-        /* ================= HEADER ================= */
         header {
-            position: sticky;
-            top: 0;
-            backdrop-filter: blur(20px);
-            background: rgba(2,6,23,.85);
             border-bottom: 1px solid var(--border);
-            z-index: 10;
+            background: rgba(2,6,23,.85);
         }
 
         .nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 14px 0;
         }
 
         .logo {
             display: flex;
-            align-items: center;
             gap: 10px;
-            font-weight: 700;
+            align-items: center;
         }
 
-        .logo-dot {
+        .logo-mark {
             width: 26px;
             height: 26px;
-            border-radius: 8px;
-            background: conic-gradient(#6366f1,#ec4899,#f97316,#22c55e,#6366f1);
-            box-shadow: 0 0 14px rgba(99,102,241,.8);
+            border-radius: 10px;
+            background: conic-gradient(from 160deg,#6366f1,#ec4899,#f97316,#22c55e,#6366f1);
         }
 
         .btn {
-            padding: 7px 14px;
-            font-size: 13px;
             border-radius: 999px;
             border: 1px solid var(--border);
+            padding: 7px 14px;
+            font-size: 13px;
             background: transparent;
             color: var(--fg);
             cursor: pointer;
         }
 
-            .btn:hover {
-                background: rgba(15,23,42,.8);
-            }
-
-        .btn-gold {
-            background: linear-gradient(135deg,var(--gold1),var(--gold2),#ffd966);
-            color: #1a1a1a;
+        .btn-primary {
+            background: linear-gradient(135deg,#6366f1,#a855f7);
             border: none;
-            font-weight: 600;
         }
 
-        /* ================= STEPPER ================= */
-        .stepper {
-            display: flex;
-            gap: 10px;
-            padding: 14px 0;
-            font-size: 12px;
-            color: var(--muted);
-        }
-
-        .step.active {
-            color: white;
-            font-weight: 600;
-        }
-
-        /* ================= MAIN ================= */
-        main {
-            padding: 30px 0;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: 1.4fr 1fr;
-            gap: 24px;
-        }
-
-        @media(max-width:900px) {
-            .grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
+        /* ================= CONTENT ================= */
         .panel {
+            margin-top: 30px;
             background: rgba(15,23,42,.9);
             border: 1px solid var(--border);
             border-radius: 18px;
-            padding: 20px;
+            padding: 22px;
         }
 
             .panel h2 {
@@ -136,65 +89,83 @@
             }
 
             .panel p {
-                color: var(--muted);
                 font-size: 13px;
+                color: var(--muted);
+                margin-bottom: 18px;
             }
 
-        /* ================= GIFT OPTIONS ================= */
-        .gift-options {
+        /* ================= GIFT TYPES ================= */
+        .gift-types {
             display: grid;
-            gap: 14px;
-            margin-top: 16px;
+            grid-template-columns: repeat(auto-fit,minmax(180px,1fr));
+            gap: 12px;
+            margin-bottom: 20px;
         }
 
-        .gift-option {
-            padding: 14px 16px;
-            border-radius: 14px;
+        .gift-card {
+            padding: 14px;
+            border-radius: 12px;
             border: 1px solid var(--border);
-            background: rgba(15,23,42,.9);
-            font-size: 14px;
-            cursor: pointer;
+            background: rgba(15,23,42,.8);
+            font-size: 13px;
         }
 
-            .gift-option.active {
-                border-color: var(--gold1);
-                background: rgba(245,197,66,.12);
-            }
-
-            .gift-option.disabled {
+            .gift-card.disabled {
                 opacity: .45;
                 cursor: not-allowed;
             }
 
-        .badge {
-            font-size: 11px;
-            margin-left: 6px;
-            color: var(--muted);
-        }
+            .gift-card.active {
+                border-color: var(--accent);
+                background: rgba(99,102,241,.15);
+            }
 
         /* ================= FORM ================= */
         label {
-            display: block;
-            margin-top: 14px;
             font-size: 12px;
+            display: block;
+            margin-bottom: 4px;
         }
 
         input {
             width: 100%;
-            margin-top: 6px;
-            padding: 10px;
+            padding: 9px 12px;
             border-radius: 10px;
             border: 1px solid var(--border);
             background: rgba(15,23,42,.95);
             color: var(--fg);
+            font-size: 14px;
         }
 
-        /* ================= FOOTER ================= */
-        .footer {
-            margin-top: 20px;
+        .actions {
             display: flex;
             justify-content: flex-end;
+            margin-top: 20px;
         }
+
+        /* ================= TOAST ================= */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: rgba(15,23,42,.95);
+            color: #e5e7eb;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            box-shadow: 0 12px 30px rgba(0,0,0,.5);
+            font-size: 13px;
+            opacity: 0;
+            transform: translateY(10px);
+            pointer-events: none;
+            transition: .25s ease;
+            z-index: 999;
+        }
+
+            .toast.show {
+                opacity: 1;
+                transform: translateY(0);
+            }
     </style>
 </head>
 
@@ -203,91 +174,60 @@
     <header>
         <div class="wrap nav">
             <div class="logo">
-                <div class="logo-dot"></div> GiftBox
+                <div class="logo-mark"></div>
+                <strong>GiftBox</strong>
             </div>
-            <a class="btn" href="../index.html">Back</a>
-        </div>
-
-        <div class="wrap stepper">
-            <div class="step active">1 Gift</div>
-            <div>→</div>
-            <div>2 Review</div>
-            <div>→</div>
-            <div>3 Done</div>
+            <a href="../index.html" class="btn">Home</a>
         </div>
     </header>
 
-    <main>
-        <div class="wrap grid">
+    <main class="wrap">
 
-            <!-- LEFT -->
-            <section class="panel">
-                <h2>Select your gift</h2>
-                <p>Only amount-based gifting is available in the MVP.</p>
+        <section class="panel">
+            <h2>Create your gift</h2>
+            <p>For MVP, only amount-based gifting is available.</p>
 
-                <div class="gift-options">
-                    <div class="gift-option active" onclick="enableAmount()">
-                        💰 Enter Amount
-                    </div>
+            <!-- Gift Types -->
+            <div class="gift-types">
+                <div class="gift-card disabled" onclick="comingSoon()">Single Stock</div>
+                <div class="gift-card active">Amount</div>
+                <div class="gift-card disabled" onclick="comingSoon()">Themed Basket</div>
+                <div class="gift-card disabled" onclick="comingSoon()">SIP (Recurring)</div>
+            </div>
 
-                    <div class="gift-option disabled" onclick="comingSoon()">
-                        📈 Single Stock <span class="badge">Coming soon</span>
-                    </div>
+            <!-- Amount -->
+            <label>Gift Amount (₹)</label>
+            <input type="number" id="amount" placeholder="5000">
 
-                    <div class="gift-option disabled" onclick="comingSoon()">
-                        🎁 Themed Basket <span class="badge">Coming soon</span>
-                    </div>
+            <div class="actions">
+                <button class="btn btn-primary" onclick="nextStep()">Next →</button>
+            </div>
+        </section>
 
-                    <div class="gift-option disabled" onclick="comingSoon()">
-                        🔁 SIP (Recurring) <span class="badge">Coming soon</span>
-                    </div>
-                </div>
-
-                <label>Gift Amount (₹)</label>
-                <input id="amount" type="number" placeholder="5000" />
-
-                <label>Message (optional)</label>
-                <input placeholder="A small step towards your future…" />
-
-                <div class="footer">
-                    <button class="btn btn-gold" onclick="goNext()">Next →</button>
-                </div>
-            </section>
-
-            <!-- RIGHT -->
-            <aside class="panel">
-                <h3>Live Preview</h3>
-                <p><strong>Type:</strong> Amount</p>
-                <p><strong>Value:</strong> ₹<span id="preview">–</span></p>
-                <p style="margin-top:10px;font-size:12px;color:var(--muted);">
-                    Transfers via SEBI-registered brokers.
-                </p>
-            </aside>
-
-        </div>
     </main>
 
+    <div id="toast" class="toast"></div>
+
     <script>
+        function showToast(msg) {
+            const t = document.getElementById("toast");
+            t.textContent = msg;
+            t.classList.add("show");
+            setTimeout(() => t.classList.remove("show"), 3000);
+        }
+
         function comingSoon() {
-            alert("This option is not available in the current MVP release.");
+            showToast("This option is not available in the current MVP release.");
         }
 
-        function enableAmount() {
-            document.getElementById("amount").focus();
-        }
-
-        function goNext() {
+        function nextStep() {
             const amt = document.getElementById("amount").value;
             if (!amt) {
-                alert("Please enter an amount.");
+                showToast("Please enter a gift amount to continue.");
                 return;
             }
-            window.location.href = "gift-money.html";
+            showToast("Gift amount saved. Next step coming soon.");
         }
-
-        document.getElementById("amount").addEventListener("input", e => {
-            document.getElementById("preview").innerText = e.target.value || "–";
-        });
     </script>
 
 </body>
