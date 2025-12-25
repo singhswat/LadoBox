@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <title>GiftBox — Create a Gift</title>
+    <title>GiftBox — Create your gift</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <style>
@@ -19,6 +19,13 @@
             --muted: #9ca3af;
             --border: rgba(148,163,184,.35);
             --accent: #6366f1;
+            --accent2: #a855f7;
+            --panel: rgba(15,23,42,.82);
+            --panel2: rgba(15,23,42,.92);
+            --shadow: 0 18px 45px rgba(15,23,42,.65);
+            --radius-lg: 18px;
+            --radius-md: 12px;
+            --pill: 999px;
         }
 
         body {
@@ -26,30 +33,43 @@
             background: radial-gradient(circle at top, #111827 0, #020617 55%);
             color: var(--fg);
             min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* ================= LAYOUT ================= */
-        .wrap {
-            max-width: 920px;
-            margin: 0 auto;
-            padding: 20px;
+        a {
+            color: inherit;
+            text-decoration: none;
         }
 
+        /* ================= HEADER ================= */
         header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
             border-bottom: 1px solid var(--border);
-            background: rgba(2,6,23,.85);
+            backdrop-filter: blur(18px);
+            background: rgba(2,6,23,.75);
+        }
+
+        .wrap {
+            max-width: 1020px;
+            margin: 0 auto;
+            padding: 0 20px;
         }
 
         .nav {
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: space-between;
+            padding: 14px 0;
         }
 
-        .logo {
+        .brand {
             display: flex;
-            gap: 10px;
             align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            letter-spacing: .02em;
         }
 
         .logo-mark {
@@ -57,108 +77,201 @@
             height: 26px;
             border-radius: 10px;
             background: conic-gradient(from 160deg,#6366f1,#ec4899,#f97316,#22c55e,#6366f1);
+            box-shadow: 0 0 18px rgba(99,102,241,.55);
         }
 
         .btn {
-            border-radius: 999px;
+            border-radius: var(--pill);
             border: 1px solid var(--border);
             padding: 7px 14px;
             font-size: 13px;
             background: transparent;
             color: var(--fg);
             cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: .16s ease;
         }
+
+            .btn:hover {
+                background: rgba(15,23,42,.7);
+                transform: translateY(-1px);
+            }
 
         .btn-primary {
-            background: linear-gradient(135deg,#6366f1,#a855f7);
-            border: none;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            border-color: transparent;
+            box-shadow: 0 10px 30px rgba(79,70,229,.45);
         }
 
-        /* ================= CONTENT ================= */
+        /* ================= PAGE ================= */
+        main {
+            padding: 26px 0 46px;
+        }
+
         .panel {
-            margin-top: 30px;
-            background: rgba(15,23,42,.9);
-            border: 1px solid var(--border);
-            border-radius: 18px;
+            margin: 0 auto;
+            max-width: 900px;
+            border-radius: 22px;
+            border: 1px solid rgba(148,163,184,.28);
+            background: radial-gradient(circle at top, rgba(15,23,42,.86), #020617 70%);
+            box-shadow: var(--shadow);
             padding: 22px;
         }
 
-            .panel h2 {
-                margin-bottom: 6px;
-            }
+        .title {
+            font-size: 26px;
+            font-weight: 750;
+            letter-spacing: -0.03em;
+            margin-bottom: 6px;
+        }
 
-            .panel p {
-                font-size: 13px;
-                color: var(--muted);
-                margin-bottom: 18px;
-            }
+        .sub {
+            color: var(--muted);
+            font-size: 13px;
+            margin-bottom: 16px;
+            max-width: 62ch;
+        }
 
         /* ================= GIFT TYPES ================= */
         .gift-types {
             display: grid;
-            grid-template-columns: repeat(auto-fit,minmax(180px,1fr));
+            grid-template-columns: repeat(4, minmax(0, 1fr));
             gap: 12px;
-            margin-bottom: 20px;
+            margin: 14px 0 18px;
+        }
+
+        @media (max-width: 860px) {
+            .gift-types {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
         }
 
         .gift-card {
             padding: 14px;
-            border-radius: 12px;
-            border: 1px solid var(--border);
-            background: rgba(15,23,42,.8);
+            border-radius: 14px;
+            border: 1px solid rgba(148,163,184,.22);
+            background: rgba(15,23,42,.55);
+            color: var(--muted);
             font-size: 13px;
+            cursor: pointer;
+            transition: .16s ease;
+            user-select: none;
         }
+
+            .gift-card:hover {
+                border-color: rgba(168,85,247,.5);
+                box-shadow: 0 0 12px rgba(129,140,248,.25);
+                transform: translateY(-1px);
+            }
+
+            .gift-card.active {
+                border-color: rgba(129,140,248,.9);
+                background: rgba(99,102,241,.16);
+                color: #e5e7eb;
+                cursor: default;
+                transform: none;
+                box-shadow: none;
+            }
 
             .gift-card.disabled {
                 opacity: .45;
                 cursor: not-allowed;
             }
 
-            .gift-card.active {
-                border-color: var(--accent);
-                background: rgba(99,102,241,.15);
+            .gift-card .t {
+                font-weight: 650;
+                color: #e5e7eb;
+                margin-bottom: 4px;
             }
 
         /* ================= FORM ================= */
+        .grid {
+            display: grid;
+            grid-template-columns: 1.25fr 1fr;
+            gap: 16px;
+            margin-top: 8px;
+        }
+
+        @media (max-width: 860px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            border-radius: 18px;
+            border: 1px solid rgba(148,163,184,.22);
+            background: rgba(15,23,42,.55);
+            padding: 16px;
+        }
+
+            .card h3 {
+                font-size: 14px;
+                font-weight: 650;
+                margin-bottom: 10px;
+                color: #e5e7eb;
+            }
+
+        .row {
+            margin-bottom: 12px;
+        }
+
         label {
-            font-size: 12px;
             display: block;
-            margin-bottom: 4px;
+            font-size: 12px;
+            color: #e5e7eb;
+            margin-bottom: 6px;
         }
 
         input {
             width: 100%;
-            padding: 9px 12px;
-            border-radius: 10px;
-            border: 1px solid var(--border);
-            background: rgba(15,23,42,.95);
+            padding: 10px 12px;
+            border-radius: 12px;
+            border: 1px solid rgba(148,163,184,.22);
+            background: rgba(15,23,42,.85);
             color: var(--fg);
             font-size: 14px;
+            outline: none;
+        }
+
+            input:focus {
+                border-color: rgba(129,140,248,.9);
+                box-shadow: 0 0 0 4px rgba(99,102,241,.15);
+            }
+
+        .hint {
+            font-size: 11px;
+            color: var(--muted);
+            margin-top: 6px;
         }
 
         .actions {
             display: flex;
             justify-content: flex-end;
-            margin-top: 20px;
+            margin-top: 14px;
+            gap: 10px;
         }
 
         /* ================= TOAST ================= */
         .toast {
             position: fixed;
-            bottom: 24px;
-            right: 24px;
+            bottom: 22px;
+            right: 22px;
             background: rgba(15,23,42,.95);
             color: #e5e7eb;
-            padding: 12px 16px;
+            padding: 12px 14px;
             border-radius: 12px;
-            border: 1px solid var(--border);
-            box-shadow: 0 12px 30px rgba(0,0,0,.5);
+            border: 1px solid rgba(148,163,184,.25);
+            box-shadow: 0 12px 30px rgba(0,0,0,.45);
             font-size: 13px;
             opacity: 0;
             transform: translateY(10px);
             pointer-events: none;
-            transition: .25s ease;
+            transition: .22s ease;
             z-index: 999;
+            max-width: 360px;
         }
 
             .toast.show {
@@ -169,70 +282,160 @@
 </head>
 
 <body>
-
     <header>
         <div class="wrap nav">
-            <div class="logo">
+            <div class="brand">
                 <div class="logo-mark"></div>
-                <strong>GiftBox</strong>
+                <div>GiftBox</div>
             </div>
-            <a href="../index.html" class="btn">Home</a>
+            <a class="btn" href="../index.html">Home</a>
         </div>
     </header>
 
     <main class="wrap">
-
         <section class="panel">
-            <h2>Create your gift</h2>
-            <p>For MVP, only amount-based gifting is available.</p>
+            <div class="title">Create your gift</div>
+            <div class="sub">For MVP, only <b>amount-based</b> gifting is available. Other gift types will appear in a future release.</div>
 
+            <!-- Gift Types -->
             <div class="gift-types">
-                <div class="gift-card disabled" onclick="comingSoon()">Single Stock</div>
-                <div class="gift-card active">Amount</div>
-                <div class="gift-card disabled" onclick="comingSoon()">Themed Basket</div>
-                <div class="gift-card disabled" onclick="comingSoon()">SIP (Recurring)</div>
+                <div class="gift-card disabled" data-disabled="true">
+                    <div class="t">Single Stock</div>
+                    Gift shares of one company.
+                </div>
+
+                <div class="gift-card active">
+                    <div class="t">Amount</div>
+                    Gift a rupee amount.
+                </div>
+
+                <div class="gift-card disabled" data-disabled="true">
+                    <div class="t">Themed Basket</div>
+                    Curated bundles of stocks.
+                </div>
+
+                <div class="gift-card disabled" data-disabled="true">
+                    <div class="t">SIP (Recurring)</div>
+                    Monthly investing gift.
+                </div>
             </div>
 
-            <label>Gift Amount (₹)</label>
-            <input type="number" id="amount" placeholder="5000" />
+            <!-- Form -->
+            <div class="grid">
+                <div class="card">
+                    <h3>Gift details</h3>
+
+                    <div class="row">
+                        <label for="amount">Gift Amount (₹)</label>
+                        <input id="amount" type="number" inputmode="numeric" placeholder="5000" min="1" />
+                        <div class="hint">Minimum ₹1. Amount only for MVP.</div>
+                    </div>
+
+                    <div class="row">
+                        <label for="occasion">Occasion / Reason (optional)</label>
+                        <input id="occasion" type="text" placeholder="Birthday, Diwali, Graduation..." />
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>UPI mapping (MVP)</h3>
+
+                    <div class="row">
+                        <label for="senderUpi">Your UPI ID (Sender)</label>
+                        <input id="senderUpi" type="text" placeholder="name@bank" />
+                        <div class="hint">Example: swat@okhdfcbank</div>
+                    </div>
+
+                    <div class="row">
+                        <label for="recipientUpi">Recipient UPI ID</label>
+                        <input id="recipientUpi" type="text" placeholder="recipient@bank" />
+                        <div class="hint">We send recipient UPI to broker for verification + execution routing.</div>
+                    </div>
+                </div>
+            </div>
 
             <div class="actions">
-                <button class="btn btn-primary" onclick="nextStep()">Next →</button>
+                <button class="btn btn-primary" id="nextBtn">Next →</button>
             </div>
         </section>
-
     </main>
 
     <div id="toast" class="toast"></div>
 
     <script>
+        // ---------- Toast ----------
         function showToast(msg) {
             const t = document.getElementById("toast");
             t.textContent = msg;
             t.classList.add("show");
-            setTimeout(() => t.classList.remove("show"), 2500);
+            clearTimeout(window.__toastTimer);
+            window.__toastTimer = setTimeout(() => t.classList.remove("show"), 2600);
         }
 
-        function comingSoon() {
-            showToast("This option is not available in the current MVP release.");
+        // ---------- Disable non-MVP gift types ----------
+        document.querySelectorAll('[data-disabled="true"]').forEach(el => {
+            el.addEventListener("click", () => {
+                showToast("Not available in the current MVP release.");
+            });
+        });
+
+        // ---------- Helpers ----------
+        function isValidUpi(upi) {
+            // simple MVP validation: "something@something"
+            if (!upi) return false;
+            const v = upi.trim();
+            return /^[a-zA-Z0-9.\-_]{2,}@[a-zA-Z0-9.\-_]{2,}$/.test(v);
         }
 
-        function nextStep() {
-            const amount = document.getElementById("amount").value;
+        function normalizeMoney(value) {
+            const n = Number(value);
+            if (!Number.isFinite(n)) return null;
+            if (n <= 0) return null;
+            return Math.round(n); // INR integer for MVP
+        }
 
-            if (!amount || amount <= 0) {
-                showToast("Please enter a valid amount");
+        // ---------- Next ----------
+        document.getElementById("nextBtn").addEventListener("click", () => {
+            const amount = normalizeMoney(document.getElementById("amount").value);
+            const occasion = (document.getElementById("occasion").value || "").trim();
+            const senderUpi = (document.getElementById("senderUpi").value || "").trim();
+            const recipientUpi = (document.getElementById("recipientUpi").value || "").trim();
+
+            if (!amount) {
+                showToast("Please enter a valid amount (₹).");
+                return;
+            }
+            if (!isValidUpi(senderUpi)) {
+                showToast("Please enter a valid Sender UPI ID (e.g. name@bank).");
+                return;
+            }
+            if (!isValidUpi(recipientUpi)) {
+                showToast("Please enter a valid Recipient UPI ID (e.g. name@bank).");
                 return;
             }
 
-            localStorage.setItem("giftbox_gift", JSON.stringify({
-                type: "Amount",
-                amount: amount
-            }));
+            // ---- MVP Data Contract (GiftBox -> Broker later) ----
+            const gift = {
+                giftId: "GBX-" + Date.now(),     // MVP unique id
+                giftType: "Amount",
+                amount: amount,
+                currency: "INR",
+                occasion: occasion || null,
 
+                senderUpi: senderUpi,
+                recipientUpi: recipientUpi,
+
+                brokerId: "AUTO_ROUTE",          // MVP placeholder
+                giftStatus: "CREATED",
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+            };
+
+            localStorage.setItem("giftbox_gift", JSON.stringify(gift));
+
+            // go to review
             window.location.href = "gift-review.html";
-        }
+        });
     </script>
-
 </body>
 </html>
