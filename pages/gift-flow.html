@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <style>
+        /* ================= RESET ================= */
         *, *::before, *::after {
             box-sizing: border-box;
             margin: 0;
@@ -13,6 +14,7 @@
         }
 
         :root {
+            --bg: #050816;
             --fg: #f7f7ff;
             --muted: #9ca3af;
             --border: rgba(148,163,184,.35);
@@ -27,11 +29,12 @@
         }
 
         .wrap {
-            max-width: 980px;
+            max-width: 920px;
             margin: 0 auto;
             padding: 20px;
         }
 
+        /* ================= HEADER ================= */
         header {
             border-bottom: 1px solid var(--border);
             background: rgba(2,6,23,.85);
@@ -47,7 +50,6 @@
             display: flex;
             gap: 10px;
             align-items: center;
-            font-weight: 600;
         }
 
         .logo-mark {
@@ -72,14 +74,26 @@
             border: none;
         }
 
+        /* ================= PANEL ================= */
         .panel {
-            margin-top: 28px;
+            margin-top: 30px;
             background: rgba(15,23,42,.9);
             border: 1px solid var(--border);
             border-radius: 18px;
             padding: 22px;
         }
 
+            .panel h2 {
+                margin-bottom: 6px;
+            }
+
+            .panel p {
+                font-size: 13px;
+                color: var(--muted);
+                margin-bottom: 18px;
+            }
+
+        /* ================= GIFT TYPES ================= */
         .gift-types {
             display: grid;
             grid-template-columns: repeat(auto-fit,minmax(180px,1fr));
@@ -95,39 +109,22 @@
             font-size: 13px;
         }
 
-            .gift-card.active {
-                border-color: var(--accent);
-                background: rgba(99,102,241,.15);
-            }
-
             .gift-card.disabled {
                 opacity: .45;
                 cursor: not-allowed;
             }
 
-        .gift-form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        @media(max-width:768px) {
-            .gift-form-grid {
-                grid-template-columns: 1fr;
+            .gift-card.active {
+                border-color: var(--accent);
+                background: rgba(99,102,241,.15);
             }
-        }
 
-        .form-column {
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 16px;
-            background: rgba(15,23,42,.85);
-        }
-
+        /* ================= FORM ================= */
         label {
             font-size: 12px;
             display: block;
             margin-bottom: 4px;
+            margin-top: 12px;
         }
 
         input {
@@ -137,13 +134,7 @@
             border: 1px solid var(--border);
             background: rgba(15,23,42,.95);
             color: var(--fg);
-            margin-bottom: 12px;
-        }
-
-        .hint {
-            font-size: 11px;
-            color: var(--muted);
-            line-height: 1.4;
+            font-size: 14px;
         }
 
         .actions {
@@ -152,6 +143,7 @@
             margin-top: 20px;
         }
 
+        /* ================= TOAST ================= */
         .toast {
             position: fixed;
             bottom: 24px;
@@ -163,6 +155,7 @@
             font-size: 13px;
             opacity: 0;
             transform: translateY(10px);
+            pointer-events: none;
             transition: .25s ease;
         }
 
@@ -177,7 +170,10 @@
 
     <header>
         <div class="wrap nav">
-            <div class="logo"><div class="logo-mark"></div>GiftBox</div>
+            <div class="logo">
+                <div class="logo-mark"></div>
+                <strong>GiftBox</strong>
+            </div>
             <a href="../index.html" class="btn">Home</a>
         </div>
     </header>
@@ -185,53 +181,29 @@
     <main class="wrap">
         <section class="panel">
             <h2>Create your gift</h2>
-            <p style="color:var(--muted);font-size:13px;">For MVP, only amount-based gifting is available.</p>
+            <p>For MVP, only amount-based gifting is available.</p>
 
             <div class="gift-types">
                 <div class="gift-card disabled" onclick="comingSoon()">Single Stock</div>
                 <div class="gift-card active">Amount</div>
-                <div class="gift-card disabled" onclick="comingSoon()">Basket</div>
-                <div class="gift-card disabled" onclick="comingSoon()">SIP</div>
+                <div class="gift-card disabled" onclick="comingSoon()">Themed Basket</div>
+                <div class="gift-card disabled" onclick="comingSoon()">SIP (Recurring)</div>
             </div>
 
-            <div class="gift-form-grid">
+            <label>Gift Amount (₹)</label>
+            <input type="number" id="amount" placeholder="5000">
 
-                <!-- GIFTER -->
-                <div class="form-column">
-                    <h3>Gifter (You)</h3>
+            <label>Your Phone (Gifter)</label>
+            <input type="tel" id="gifterPhone" placeholder="Your phone number">
 
-                    <label>Occasion / Reason</label>
-                    <input id="occasion" placeholder="Birthday, graduation…" />
+            <label>Recipient Phone</label>
+            <input type="tel" id="recipientPhone" placeholder="Recipient phone number">
 
-                    <label>Gift Amount (₹)</label>
-                    <input id="amount" type="number" placeholder="5000" />
+            <label>Occasion / Message</label>
+            <input type="text" id="occasion" placeholder="Happy Birthday, continue to invest in your future">
 
-                    <label>Your Phone Number</label>
-                    <input id="senderPhone" placeholder="+91XXXXXXXXXX" />
-
-                    <label>Preferred Stock / Theme (optional)</label>
-                    <input id="preferredStock" placeholder="Invest your future with ICICI Bank" />
-
-                    <div class="hint">Preference only. Broker decides final execution.</div>
-                </div>
-
-                <!-- RECIPIENT -->
-                <div class="form-column">
-                    <h3>Recipient (Receiver)</h3>
-
-                    <label>Recipient Phone Number</label>
-                    <input id="recipientPhone" placeholder="+91XXXXXXXXXX" />
-
-                    <div class="hint" style="margin-top:10px;">
-                        💰 Recipient will see:
-                        <strong id="receiverAmount">₹—</strong><br>
-                        🎁 Reason:
-                        <strong id="receiverOccasion">—</strong><br><br>
-                        Works with Google Pay, PhonePe, Paytm & bank apps.
-                    </div>
-                </div>
-
-            </div>
+            <label>Preferred Stock / Theme</label>
+            <input type="text" id="theme" placeholder="e.g. ICICI Bank">
 
             <div class="actions">
                 <button class="btn btn-primary" onclick="nextStep()">Next →</button>
@@ -242,39 +214,43 @@
     <div id="toast" class="toast"></div>
 
     <script>
-        const amountEl = document.getElementById("amount");
-        const occasionEl = document.getElementById("occasion");
-
         function showToast(msg) {
             const t = document.getElementById("toast");
-            t.textContent = msg; t.classList.add("show");
+            t.textContent = msg;
+            t.classList.add("show");
             setTimeout(() => t.classList.remove("show"), 3000);
         }
 
-        function comingSoon() { showToast("Not available in current MVP"); }
-
-        function sync() {
-            document.getElementById("receiverAmount").textContent =
-                amountEl.value ? "₹" + amountEl.value : "₹—";
-            document.getElementById("receiverOccasion").textContent =
-                occasionEl.value || "—";
+        function comingSoon() {
+            showToast("This option is not available in the current MVP release.");
         }
-        amountEl.addEventListener("input", sync);
-        occasionEl.addEventListener("input", sync);
 
         function nextStep() {
-            if (!amountEl.value || amountEl.value <= 0) {
-                showToast("Enter a valid amount"); return;
+            const amount = document.getElementById("amount").value;
+            const gifterPhone = document.getElementById("gifterPhone").value;
+            const recipientPhone = document.getElementById("recipientPhone").value;
+            const occasion = document.getElementById("occasion").value;
+            const theme = document.getElementById("theme").value;
+
+            if (!amount || amount <= 0) {
+                showToast("Please enter a valid amount");
+                return;
             }
+
+            if (!recipientPhone) {
+                showToast("Please enter recipient phone number");
+                return;
+            }
+
             localStorage.setItem("giftbox_gift", JSON.stringify({
                 type: "Amount",
-                amount: amountEl.value,
-                occasion: occasionEl.value || null,
-                senderPhone: document.getElementById("senderPhone").value || null,
-                recipientPhone: document.getElementById("recipientPhone").value || null,
-                preferredStock: document.getElementById("preferredStock").value || null,
-                createdAt: new Date().toISOString()
+                amount,
+                gifterPhone,
+                recipientPhone,
+                occasion,
+                theme
             }));
+
             window.location.href = "gift-review.html";
         }
     </script>
