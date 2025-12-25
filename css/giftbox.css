@@ -713,6 +713,63 @@ section {
         transform: translateY(0);
     }
 
+/* ===== Review Page ===== */
+
+.review-wrap {
+    display: flex;
+    justify-content: center;
+    padding-top: 60px;
+}
+
+.review-card {
+    width: 100%;
+    max-width: 520px;
+    background: rgba(15,23,42,.92);
+    border: 1px solid rgba(148,163,184,.35);
+    border-radius: 20px;
+    padding: 28px;
+    box-shadow: 0 18px 45px rgba(0,0,0,.6);
+}
+
+    .review-card h1 {
+        font-size: 22px;
+        margin-bottom: 4px;
+    }
+
+.review-sub {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 22px;
+}
+
+.review-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.review-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed rgba(148,163,184,.25);
+}
+
+    .review-row span {
+        color: var(--muted);
+    }
+
+    .review-row strong {
+        color: #e5e7eb;
+        font-weight: 600;
+    }
+
+.review-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 26px;
+}
 
 /* ---------- CTA band ---------- */
 

@@ -2,65 +2,250 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <title>Review Gift — GiftBox</title>
+    <title>GiftBox — Review Gift</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="../css/giftbox.css" />
+
+    <style>
+        /* ================= RESET ================= */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg: #050816;
+            --fg: #f7f7ff;
+            --muted: #9ca3af;
+            --border: rgba(148,163,184,.35);
+            --accent: #6366f1;
+            --success: #22c55e;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+            background: radial-gradient(circle at top, #111827 0, #020617 55%);
+            color: var(--fg);
+            min-height: 100vh;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* ================= LAYOUT ================= */
+        .wrap {
+            max-width: 920px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            border-bottom: 1px solid var(--border);
+            background: rgba(2,6,23,.85);
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-mark {
+            width: 26px;
+            height: 26px;
+            border-radius: 10px;
+            background: conic-gradient( from 160deg, #6366f1, #ec4899, #f97316, #22c55e, #6366f1 );
+        }
+
+        .btn {
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            padding: 7px 14px;
+            font-size: 13px;
+            background: transparent;
+            color: var(--fg);
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg,#6366f1,#a855f7);
+            border: none;
+        }
+
+        /* ================= REVIEW CARD ================= */
+        .review-wrap {
+            display: flex;
+            justify-content: center;
+            padding-top: 60px;
+        }
+
+        .review-card {
+            width: 100%;
+            max-width: 520px;
+            background: rgba(15,23,42,.92);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 28px;
+            box-shadow: 0 18px 45px rgba(0,0,0,.6);
+        }
+
+            .review-card h1 {
+                font-size: 22px;
+                margin-bottom: 4px;
+            }
+
+        .review-sub {
+            font-size: 13px;
+            color: var(--muted);
+            margin-bottom: 22px;
+        }
+
+        .review-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .review-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed rgba(148,163,184,.25);
+        }
+
+            .review-row span {
+                color: var(--muted);
+            }
+
+            .review-row strong {
+                color: #e5e7eb;
+                font-weight: 600;
+            }
+
+        .review-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 26px;
+        }
+
+        /* ================= TOAST ================= */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: rgba(15,23,42,.95);
+            color: #e5e7eb;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            box-shadow: 0 12px 30px rgba(0,0,0,.5);
+            font-size: 13px;
+            opacity: 0;
+            transform: translateY(10px);
+            pointer-events: none;
+            transition: .25s ease;
+            z-index: 999;
+        }
+
+            .toast.show {
+                opacity: 1;
+                transform: translateY(0);
+            }
+    </style>
 </head>
+
 <body>
 
-    <div class="page">
-        <header>
-            <div class="wrap nav">
-                <div class="nav-left">
-                    <div class="logo-mark"></div>
-                    <div class="logo-text">GiftBox</div>
-                </div>
-                <a href="gift-flow.html" class="btn">← Edit Gift</a>
+    <header>
+        <div class="wrap nav">
+            <div class="logo">
+                <div class="logo-mark"></div>
+                <strong>GiftBox</strong>
             </div>
-        </header>
+            <a href="gift-flow.html" class="btn">← Edit Gift</a>
+        </div>
+    </header>
 
-        <main class="wrap" style="max-width:720px;padding:40px 20px;">
-            <div class="panel">
-                <h2 class="panel-title">Review your Gift</h2>
-                <p class="panel-sub">Please confirm the details before proceeding.</p>
+    <main class="wrap review-wrap">
+        <section class="review-card">
 
-                <div class="summary-item"><span>Gift Type</span><strong id="rType"></strong></div>
-                <div class="summary-item"><span>Amount</span><strong id="rAmount"></strong></div>
-                <div class="summary-item"><span>Occasion</span><strong id="rOccasion"></strong></div>
-                <div class="summary-item"><span>Recipient</span><strong id="rRecipient"></strong></div>
-                <div class="summary-item"><span>Demat ID</span><strong id="rDemat"></strong></div>
-                <div class="summary-item"><span>Broker</span><strong id="rBroker"></strong></div>
+            <h1>Review your Gift</h1>
+            <p class="review-sub">Please confirm the details before proceeding.</p>
 
-                <div class="summary-divider"></div>
-                <p id="rMessage" style="color:var(--muted);font-size:13px;"></p>
+            <div class="review-list">
+                <div class="review-row">
+                    <span>Gift Type</span>
+                    <strong id="r-type">—</strong>
+                </div>
 
-                <div class="panel-footer">
-                    <button class="btn" onclick="history.back()">← Back</button>
-                    <button class="btn btn-primary" onclick="confirmGift()">Confirm Gift</button>
+                <div class="review-row">
+                    <span>Amount</span>
+                    <strong id="r-amount">—</strong>
+                </div>
+
+                <div class="review-row">
+                    <span>Occasion</span>
+                    <strong id="r-occasion">—</strong>
+                </div>
+
+                <div class="review-row">
+                    <span>Recipient</span>
+                    <strong id="r-recipient">—</strong>
+                </div>
+
+                <div class="review-row">
+                    <span>Demat ID</span>
+                    <strong id="r-demat">—</strong>
+                </div>
+
+                <div class="review-row">
+                    <span>Broker</span>
+                    <strong id="r-broker">Auto Route</strong>
                 </div>
             </div>
-        </main>
-    </div>
+
+            <div class="review-actions">
+                <a href="gift-flow.html" class="btn">← Back</a>
+                <button class="btn btn-primary" onclick="confirmGift()">Confirm Gift</button>
+            </div>
+
+        </section>
+    </main>
+
+    <div id="toast" class="toast"></div>
 
     <script>
-  const gift = JSON.parse(localStorage.getItem("giftbox_gift"));
+        function showToast(msg) {
+            const t = document.getElementById("toast");
+            t.textContent = msg;
+            t.classList.add("show");
+            setTimeout(() => t.classList.remove("show"), 3000);
+        }
 
-  if (!gift) {
-    window.location.href = "gift-flow.html";
-  }
+        const data = JSON.parse(localStorage.getItem("giftbox_gift")) || {};
 
-  document.getElementById("rType").textContent = gift.type;
-  document.getElementById("rAmount").textContent = "₹" + gift.amount;
-  document.getElementById("rOccasion").textContent = gift.occasion || "—";
-  document.getElementById("rRecipient").textContent = gift.recipient + (gift.relation ? " (" + gift.relation + ")" : "");
-  document.getElementById("rDemat").textContent = gift.demat;
-  document.getElementById("rBroker").textContent = gift.broker;
-  document.getElementById("rMessage").textContent = gift.message || "No message added.";
+        document.getElementById("r-type").textContent = data.type || "Amount";
+        document.getElementById("r-amount").textContent = data.amount ? "₹" + data.amount : "—";
+        document.getElementById("r-occasion").textContent = data.occasion || "—";
+        document.getElementById("r-recipient").textContent = data.recipient || "—";
+        document.getElementById("r-demat").textContent = data.demat || "—";
+        document.getElementById("r-broker").textContent = data.broker || "Auto Route";
 
-  function confirmGift() {
-    localStorage.setItem("giftbox_confirmed", "true");
-    window.location.href = "gift-success.html";
-  }
+        function confirmGift() {
+            showToast("Gift submitted to broker. T+1 processing expected.");
+            setTimeout(() => {
+                window.location.href = "gift-success.html";
+            }, 1500);
+        }
     </script>
 
 </body>
