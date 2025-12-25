@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <style>
-        /* ================= RESET ================= */
         *, *::before, *::after {
             box-sizing: border-box;
             margin: 0;
@@ -14,7 +13,6 @@
         }
 
         :root {
-            --bg: #050816;
             --fg: #f7f7ff;
             --muted: #9ca3af;
             --border: rgba(148,163,184,.35);
@@ -34,7 +32,6 @@
             padding: 20px;
         }
 
-        /* ================= HEADER ================= */
         header {
             border-bottom: 1px solid var(--border);
             background: rgba(2,6,23,.85);
@@ -74,7 +71,6 @@
             border: none;
         }
 
-        /* ================= PANEL ================= */
         .panel {
             margin-top: 30px;
             background: rgba(15,23,42,.9);
@@ -83,17 +79,12 @@
             padding: 22px;
         }
 
-            .panel h2 {
-                margin-bottom: 6px;
-            }
-
             .panel p {
                 font-size: 13px;
                 color: var(--muted);
                 margin-bottom: 18px;
             }
 
-        /* ================= GIFT TYPES ================= */
         .gift-types {
             display: grid;
             grid-template-columns: repeat(auto-fit,minmax(180px,1fr));
@@ -119,12 +110,10 @@
                 background: rgba(99,102,241,.15);
             }
 
-        /* ================= FORM ================= */
         label {
             font-size: 12px;
             display: block;
-            margin-bottom: 4px;
-            margin-top: 12px;
+            margin: 12px 0 4px;
         }
 
         input {
@@ -143,7 +132,6 @@
             margin-top: 20px;
         }
 
-        /* ================= TOAST ================= */
         .toast {
             position: fixed;
             bottom: 24px;
@@ -155,7 +143,6 @@
             font-size: 13px;
             opacity: 0;
             transform: translateY(10px);
-            pointer-events: none;
             transition: .25s ease;
         }
 
@@ -200,10 +187,10 @@
             <input type="tel" id="recipientPhone" placeholder="Recipient phone number">
 
             <label>Occasion / Message</label>
-            <input type="text" id="occasion" placeholder="Happy Birthday, continue to invest in your future">
+            <input type="text" id="message" placeholder="Happy Birthday, continue to invest in your future">
 
             <label>Preferred Stock / Theme</label>
-            <input type="text" id="theme" placeholder="e.g. ICICI Bank">
+            <input type="text" id="preferredStock" placeholder="e.g. ICICI Bank">
 
             <div class="actions">
                 <button class="btn btn-primary" onclick="nextStep()">Next →</button>
@@ -229,15 +216,20 @@
             const amount = document.getElementById("amount").value;
             const gifterPhone = document.getElementById("gifterPhone").value;
             const recipientPhone = document.getElementById("recipientPhone").value;
-            const occasion = document.getElementById("occasion").value;
-            const theme = document.getElementById("theme").value;
+            const message = document.getElementById("message").value;
+            const preferredStock = document.getElementById("preferredStock").value;
 
             if (!amount || amount <= 0) {
                 showToast("Please enter a valid amount");
                 return;
             }
 
-            if (!recipientPhone) {
+            if (!gifterPhone || gifterPhone.length < 10) {
+                showToast("Please enter your phone number");
+                return;
+            }
+
+            if (!recipientPhone || recipientPhone.length < 10) {
                 showToast("Please enter recipient phone number");
                 return;
             }
@@ -247,8 +239,8 @@
                 amount,
                 gifterPhone,
                 recipientPhone,
-                occasion,
-                theme
+                message: message || "—",
+                preferredStock: preferredStock || "—"
             }));
 
             window.location.href = "gift-review.html";
