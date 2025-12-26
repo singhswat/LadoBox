@@ -1,0 +1,221 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>GiftBox — Claim Gift</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <style>
+        body {
+            font-family: system-ui;
+            background: radial-gradient(circle at top,#111827,#020617);
+            color: #f7f7ff;
+            margin: 0;
+        }
+
+        .wrap {
+            max-width: 900px;
+            margin: auto;
+            padding: 24px
+        }
+
+        header {
+            border-bottom: 1px solid rgba(148,163,184,.35);
+            padding: 16px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+        }
+
+        .logo-mark {
+            width: 26px;
+            height: 26px;
+            border-radius: 10px;
+            background: conic-gradient(from 160deg,#6366f1,#ec4899,#f97316,#22c55e,#6366f1)
+        }
+
+        .panel {
+            margin-top: 28px;
+            background: rgba(15,23,42,.9);
+            border: 1px solid rgba(148,163,184,.35);
+            border-radius: 22px;
+            padding: 28px;
+        }
+
+        .card {
+            background: rgba(2,6,23,.7);
+            border: 1px solid rgba(148,163,184,.25);
+            border-radius: 18px;
+            padding: 22px;
+            margin-top: 18px;
+        }
+
+        label {
+            font-size: 13px;
+            color: #9ca3af;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid rgba(148,163,184,.35);
+            background: rgba(2,6,23,.8);
+            color: #fff;
+            margin-top: 8px;
+            font-size: 16px;
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            padding: 6px 0;
+        }
+
+        .label {
+            color: #9ca3af
+        }
+
+        .actions {
+            margin-top: 24px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .btn {
+            padding: 10px 18px;
+            border-radius: 999px;
+            border: 1px solid rgba(148,163,184,.35);
+            background: transparent;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg,#6366f1,#a855f7);
+            border: none;
+            font-weight: 600;
+        }
+
+        .note {
+            margin-top: 14px;
+            font-size: 12px;
+            color: #9ca3af;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="wrap logo">
+            <div class="logo-mark"></div>
+            GiftBox
+        </div>
+    </header>
+
+    <main class="wrap">
+        <section class="panel">
+
+            <div class="label">Claim a gift</div>
+            <h1>Enter your phone number to continue</h1>
+
+            <p style="color:#9ca3af">
+                We’ll use your phone number to verify your identity and show
+                the gift details before you proceed.
+            </p>
+
+            <!-- Phone Entry -->
+            <div class="card">
+                <label>Mobile number</label>
+                <input id="phone" placeholder="+91 9XXXXXXXXX" />
+                <div class="note">
+                    This number must match the recipient number used by the sender.
+                </div>
+            </div>
+
+            <!-- Gift Preview -->
+            <div class="card" id="giftPreview" style="display:none;">
+                <h3>Gift preview</h3>
+
+                <div class="row">
+                    <span class="label">Gift amount</span>
+                    <span id="amount">—</span>
+                </div>
+                <div class="row">
+                    <span class="label">Preferred stock</span>
+                    <span id="stock">—</span>
+                </div>
+                <div class="row">
+                    <span class="label">Message</span>
+                    <span id="message">—</span>
+                </div>
+
+                <div class="note">
+                    Funds are reserved by the sender. You will not be charged.
+                </div>
+            </div>
+
+            <div class="actions">
+                <button class="btn" onclick="history.back()">Back</button>
+                <button class="btn btn-primary" onclick="continueFlow()">
+                    Continue →
+                </button>
+            </div>
+
+            <div class="note">
+                GiftBox provides execution assistance only. Investments are executed
+                by SEBI-registered brokers.
+            </div>
+
+        </section>
+    </main>
+
+    <script>
+/*
+  MVP MOCK:
+  In production this is a backend lookup:
+  phone → gift details
+*/
+const mockGift = {
+    amount: 5000,
+    preferredStock: "ICICI Bank",
+    message: "Happy Birthday 🎉"
+};
+
+const preview = document.getElementById("giftPreview");
+
+document.getElementById("phone").addEventListener("input", e => {
+    if (e.target.value.length >= 8) {
+        preview.style.display = "block";
+
+        document.getElementById("amount").textContent =
+            "₹" + mockGift.amount.toLocaleString("en-IN");
+        document.getElementById("stock").textContent =
+            mockGift.preferredStock;
+        document.getElementById("message").textContent =
+            mockGift.message;
+
+        // Persist for next steps
+        localStorage.setItem("giftbox_gift", JSON.stringify(mockGift));
+        localStorage.setItem("giftbox_receiver_phone", e.target.value);
+    }
+});
+
+function continueFlow() {
+    if (!document.getElementById("phone").value) {
+        alert("Please enter your phone number");
+        return;
+    }
+    window.location.href = "step2-view.html";
+}
+    </script>
+
+</body>
+</html>
