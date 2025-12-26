@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <title>GiftBox — Broker Routing</title>
+    <title>GiftBox — Broker Routing (Step 4/5)</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
         *, *::before, *::after {
@@ -12,205 +12,332 @@
         }
 
         :root {
+            --bg: #050816;
             --fg: #f7f7ff;
             --muted: #9ca3af;
             --border: rgba(148,163,184,.35);
-            --bg1: #111827;
-            --bg2: #020617;
             --card: rgba(15,23,42,.9);
-            --blue: #3b82f6;
-            --green: #22c55e;
-            --amber: #f59e0b;
+            --accent: #6366f1;
+            --accent2: #a855f7;
+            --success: #22c55e;
+            --shadow: 0 18px 45px rgba(15,23,42,.65)
         }
 
         body {
             font-family: system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
-            background: radial-gradient(circle at top,var(--bg1) 0,var(--bg2) 55%);
+            background: radial-gradient(circle at top,#111827 0,#020617 55%);
             color: var(--fg);
             min-height: 100vh
         }
 
+        a {
+            color: inherit;
+            text-decoration: none
+        }
+
         .wrap {
-            max-width: 920px;
+            max-width: 1120px;
             margin: 0 auto;
-            padding: 20px
+            padding: 18px 20px
         }
 
         header {
+            position: sticky;
+            top: 0;
+            z-index: 20;
             border-bottom: 1px solid var(--border);
-            background: rgba(2,6,23,.85)
+            backdrop-filter: blur(18px);
+            background: rgba(2,6,23,.82)
         }
 
         .nav {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            gap: 12px;
+            justify-content: space-between;
             padding: 14px 0
         }
 
-        .logo {
+        .brand {
             display: flex;
-            gap: 10px;
-            align-items: center
+            align-items: center;
+            gap: 10px
         }
 
         .logo-mark {
             width: 26px;
             height: 26px;
             border-radius: 10px;
-            background: conic-gradient(from 160deg,#6366f1,#ec4899,#f97316,#22c55e,#6366f1)
+            background: conic-gradient(from 160deg,#6366f1,#ec4899,#f97316,#22c55e,#6366f1);
+            box-shadow: 0 0 18px rgba(99,102,241,.55)
         }
 
         .btn {
             border-radius: 999px;
             border: 1px solid var(--border);
-            padding: 7px 14px;
+            padding: 8px 14px;
             font-size: 13px;
             background: transparent;
             color: var(--fg);
             cursor: pointer;
-            text-decoration: none;
             display: inline-flex;
             align-items: center;
             gap: 8px
         }
 
-        .btn-blue {
-            background: linear-gradient(135deg,var(--blue),#2563eb);
-            border: none
+            .btn:hover {
+                background: rgba(15,23,42,.7)
+            }
+
+        .btn-primary {
+            border: none;
+            background: linear-gradient(135deg,var(--accent),var(--accent2));
+            box-shadow: 0 10px 30px rgba(79,70,229,.45)
+        }
+
+        .shell {
+            padding: 26px 0 40px
         }
 
         .panel {
-            margin-top: 22px;
-            background: var(--card);
+            border-radius: 22px;
             border: 1px solid var(--border);
-            border-radius: 18px;
-            padding: 18px
+            background: radial-gradient(circle at top,rgba(15,23,42,.92),#020617 65%);
+            box-shadow: var(--shadow);
+            padding: 22px
         }
 
         .kicker {
             color: var(--muted);
             font-size: 13px;
+            margin-bottom: 6px
+        }
+
+        h1 {
+            font-size: 28px;
+            letter-spacing: -.02em;
             margin-bottom: 10px
         }
 
-        .card {
-            border: 1px solid rgba(96,165,250,.35);
-            background: radial-gradient(circle at top left,rgba(96,165,250,.12),rgba(15,23,42,.95));
-            border-radius: 16px;
-            padding: 16px
+        .sub {
+            color: var(--muted);
+            font-size: 14px;
+            margin-bottom: 18px;
+            max-width: 900px
         }
 
-        .status {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: 8px;
-            color: #e5e7eb
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px
         }
 
-        .dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 999px;
-            background: var(--amber);
-            box-shadow: 0 0 10px rgba(245,158,11,.55)
-        }
-
-            .dot.ok {
-                background: var(--green);
-                box-shadow: 0 0 10px rgba(34,197,94,.55)
+        @media(max-width:920px) {
+            .grid {
+                grid-template-columns: 1fr
             }
+        }
+
+        .card {
+            border-radius: 18px;
+            border: 1px solid rgba(148,163,184,.25);
+            background: rgba(2,6,23,.35);
+            padding: 18px
+        }
 
         .row {
             display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            justify-content: flex-end;
-            margin-top: 14px
+            justify-content: space-between;
+            gap: 12px;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(148,163,184,.14)
         }
 
-        .muted {
+            .row:last-child {
+                border-bottom: none
+            }
+
+        .label {
             color: var(--muted);
-            font-size: 13px;
-            line-height: 1.6;
-            margin-top: 10px
+            font-size: 12px
+        }
+
+        .val {
+            font-size: 14px
+        }
+
+        .big {
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: -.02em
+        }
+
+        .meter {
+            margin-top: 14px;
+            height: 9px;
+            border-radius: 999px;
+            border: 1px solid rgba(148,163,184,.25);
+            background: rgba(15,23,42,.7);
+            overflow: hidden
+        }
+
+        .fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg,#22c55e,#a3e635,#facc15);
+            transition: width .4s ease
+        }
+
+        .steps {
+            margin-top: 12px;
+            display: grid;
+            gap: 10px
+        }
+
+        .step {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            border-radius: 14px;
+            border: 1px solid rgba(148,163,184,.16);
+            background: rgba(15,23,42,.45);
+            padding: 10px 12px
+        }
+
+        .badge {
+            width: 18px;
+            height: 18px;
+            border-radius: 6px;
+            background: rgba(99,102,241,.18);
+            border: 1px solid rgba(99,102,241,.45);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: #c7d2fe;
+            flex: 0 0 auto;
+            margin-top: 1px
+        }
+
+        .ok {
+            background: rgba(34,197,94,.18);
+            border-color: rgba(34,197,94,.45);
+            color: #bbf7d0
+        }
+
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 16px;
+            gap: 10px;
+            flex-wrap: wrap
+        }
+
+        .fine {
+            color: var(--muted);
+            font-size: 12px
         }
     </style>
 </head>
+
 <body>
     <header>
         <div class="wrap nav">
-            <div class="logo">
+            <div class="brand">
                 <div class="logo-mark"></div>
                 <strong>GiftBox</strong>
             </div>
-            <a class="btn" href="recipient-step3-verify.html">Back</a>
+            <a class="btn" href="step3-verify.html">← Back</a>
         </div>
     </header>
 
-    <main class="wrap">
-        <div class="panel">
-            <div class="kicker">Receiver Step 4/5 — Broker verification</div>
-            <h2 style="margin-bottom:10px;">🏦 Connecting you to a broker</h2>
+    <main class="wrap shell">
+        <section class="panel">
+            <div class="kicker">Receiver Step 4/5 — Broker routing & validation</div>
+            <h1>We’re routing your gift to a SEBI-registered broker</h1>
+            <p class="sub">
+                GiftBox provides execution assistance only. The broker (conceptual in MVP) performs identity checks,
+                validates whether a demat account exists, and executes the investment.
+            </p>
 
-            <div class="card">
-                <div id="statusLine" class="status">
-                    <span class="dot"></span>
-                    <strong>Checking your demat availability…</strong>
+            <div class="grid">
+                <div class="card">
+                    <h3 style="margin-bottom:10px;">Gift summary</h3>
+                    <div class="row"><div class="label">Amount</div><div class="val big" id="amt">₹—</div></div>
+                    <div class="row"><div class="label">Recipient phone</div><div class="val" id="rec">—</div></div>
+                    <div class="row"><div class="label">Preferred stock / theme</div><div class="val" id="theme">—</div></div>
+                    <div class="row"><div class="label">Execution</div><div class="val">By SEBI-registered broker (conceptual)</div></div>
+
+                    <div class="meter" aria-label="progress">
+                        <div class="fill" id="fill"></div>
+                    </div>
+
+                    <p class="fine" style="margin-top:10px;">
+                        Note: This is a simulated MVP flow. In production, routing and verification occur within broker systems.
+                    </p>
                 </div>
 
-                <div id="details" class="muted"></div>
-
-                <div class="row" style="margin-top:16px;">
-                    <a class="btn" href="../index.html">Close</a>
-                    <button id="primaryBtn" class="btn btn-blue" onclick="goNext()">Continue</button>
+                <div class="card">
+                    <h3 style="margin-bottom:10px;">Validation steps</h3>
+                    <div class="steps">
+                        <div class="step"><div class="badge ok">✓</div><div><b>Recipient verified</b><div class="fine">OTP verification completed</div></div></div>
+                        <div class="step" id="s2"><div class="badge">2</div><div><b>Check demat / KYC</b><div class="fine">Broker checks if a demat account exists for your phone</div></div></div>
+                        <div class="step" id="s3"><div class="badge">3</div><div><b>Reserve funds (gifter side)</b><div class="fine">Funds remain on sender side until broker verification completes</div></div></div>
+                        <div class="step" id="s4"><div class="badge">4</div><div><b>Execute investment</b><div class="fine">Order placed by broker and settled to recipient demat</div></div></div>
+                    </div>
                 </div>
             </div>
-        </div>
+
+            <div class="actions">
+                <span class="fine">You will not be charged. The sender is charged only after verification completes.</span>
+                <button class="btn btn-primary" onclick="continueFlow()">Continue →</button>
+            </div>
+        </section>
     </main>
 
     <script>
-(function(){
-  const receiver = JSON.parse(localStorage.getItem("giftbox_receiver") || "{}");
-  const gift = JSON.parse(localStorage.getItem("giftbox_gift") || "{}");
+        function safe(v, f = "—") { if (v === undefined || v === null) return f; const s = String(v).trim(); return s ? s : f; }
+        function getGift() { try { return JSON.parse(localStorage.getItem("giftbox_gift") || "{}"); } catch (e) { return {}; } }
+        function formatINR(n) { const num = Number(n); if (!isFinite(num)) return "₹—"; return "₹" + num.toLocaleString("en-IN"); }
 
-  const phone = receiver.phone || gift.recipientPhone || "";
-  // MVP rule: if last digit is even -> demat found, else -> needs KYC
-  const last = phone ? Number(String(phone).slice(-1)) : 1;
-  const hasDemat = !Number.isNaN(last) && last % 2 === 0;
+        // Guard: must be verified
+        if (localStorage.getItem("giftbox_receiver_verified") !== "true") {
+            window.location.href = "step3-verify.html";
+        }
 
-  const statusLine = document.getElementById("statusLine");
-  const dot = statusLine.querySelector(".dot");
-  const details = document.getElementById("details");
-  const primaryBtn = document.getElementById("primaryBtn");
+        const gift = getGift();
+        document.getElementById("amt").textContent = formatINR(gift.amount);
+        document.getElementById("rec").textContent = safe(gift.recipientPhone);
+        document.getElementById("theme").textContent = safe(gift.theme, "—");
 
-  if (hasDemat){
-    dot.classList.add("ok");
-    statusLine.querySelector("strong").textContent = "✅ Demat account found — fast processing";
-    details.innerHTML =
-      `We found an existing demat linked to your phone.<br/>
-       Your gift will be processed faster by the broker.<br/><br/>
-       <strong>Amount received:</strong> ₹${gift.amount || "5000"}<br/>
-       <strong>Theme:</strong> ${gift.preferredStock || gift.theme || "—"}`;
-    primaryBtn.textContent = "Proceed to confirmation";
-    localStorage.setItem("giftbox_broker_status", JSON.stringify({hasDemat:true, status:"READY_TO_EXECUTE"}));
-  } else {
-    statusLine.querySelector("strong").textContent = "⚠ Demat not found — KYC required to claim";
-    details.innerHTML =
-      `To invest your gift, you’ll need to complete a quick KYC via the broker.<br/>
-       (MVP simulation: we’ll continue without real KYC.)<br/><br/>
-       <strong>Amount received:</strong> ₹${gift.amount || "5000"}<br/>
-       <strong>Theme:</strong> ${gift.preferredStock || gift.theme || "—"}`;
-    primaryBtn.textContent = "Start KYC (simulated)";
-    localStorage.setItem("giftbox_broker_status", JSON.stringify({hasDemat:false, status:"KYC_REQUIRED"}));
-  }
-})();
+        // Simulate progress + steps
+        const fill = document.getElementById("fill");
+        const s2 = document.getElementById("s2"), s3 = document.getElementById("s3"), s4 = document.getElementById("s4");
+        let p = 0;
 
-function goNext(){
-  window.location.href = "recipient-step5-success.html";
-}
+        function markDone(el) {
+            const b = el.querySelector(".badge");
+            b.classList.add("ok");
+            b.textContent = "✓";
+        }
+
+        function tick() {
+            p = Math.min(100, p + 22);
+            fill.style.width = p + "%";
+            if (p >= 25) markDone(s2);
+            if (p >= 55) markDone(s3);
+            if (p >= 85) markDone(s4);
+        }
+
+        const timer = setInterval(() => {
+            tick();
+            if (p >= 100) clearInterval(timer);
+        }, 700);
+
+        function continueFlow() {
+            localStorage.setItem("giftbox_broker_routed", "true");
+            window.location.href = "step5-success.html";
+        }
     </script>
 </body>
 </html>

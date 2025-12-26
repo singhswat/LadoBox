@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <title>GiftBox — Gift Accepted</title>
+    <title>GiftBox — Receiver Success (Step 5/5)</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
         *, *::before, *::after {
@@ -12,207 +12,268 @@
         }
 
         :root {
+            --bg: #050816;
             --fg: #f7f7ff;
             --muted: #9ca3af;
             --border: rgba(148,163,184,.35);
-            --bg1: #111827;
-            --bg2: #020617;
-            --card: rgba(15,23,42,.9);
-            --blue: #3b82f6;
-            --green: #22c55e;
+            --accent: #6366f1;
+            --accent2: #a855f7;
+            --success: #22c55e;
+            --shadow: 0 18px 45px rgba(15,23,42,.65)
         }
 
         body {
             font-family: system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
-            background: radial-gradient(circle at top,var(--bg1) 0,var(--bg2) 55%);
+            background: radial-gradient(circle at top,#111827 0,#020617 55%);
             color: var(--fg);
             min-height: 100vh
         }
 
+        a {
+            color: inherit;
+            text-decoration: none
+        }
+
         .wrap {
-            max-width: 920px;
+            max-width: 1120px;
             margin: 0 auto;
-            padding: 20px
+            padding: 18px 20px
         }
 
         header {
+            position: sticky;
+            top: 0;
+            z-index: 20;
             border-bottom: 1px solid var(--border);
-            background: rgba(2,6,23,.85)
+            backdrop-filter: blur(18px);
+            background: rgba(2,6,23,.82)
         }
 
         .nav {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            gap: 12px;
+            justify-content: space-between;
             padding: 14px 0
         }
 
-        .logo {
+        .brand {
             display: flex;
-            gap: 10px;
-            align-items: center
+            align-items: center;
+            gap: 10px
         }
 
         .logo-mark {
             width: 26px;
             height: 26px;
             border-radius: 10px;
-            background: conic-gradient(from 160deg,#6366f1,#ec4899,#f97316,#22c55e,#6366f1)
+            background: conic-gradient(from 160deg,#6366f1,#ec4899,#f97316,#22c55e,#6366f1);
+            box-shadow: 0 0 18px rgba(99,102,241,.55)
         }
 
         .btn {
             border-radius: 999px;
             border: 1px solid var(--border);
-            padding: 7px 14px;
+            padding: 8px 14px;
             font-size: 13px;
             background: transparent;
             color: var(--fg);
             cursor: pointer;
-            text-decoration: none;
             display: inline-flex;
             align-items: center;
             gap: 8px
         }
 
-        .btn-blue {
-            background: linear-gradient(135deg,var(--blue),#2563eb);
-            border: none
+            .btn:hover {
+                background: rgba(15,23,42,.7)
+            }
+
+        .btn-primary {
+            border: none;
+            background: linear-gradient(135deg,var(--accent),var(--accent2));
+            box-shadow: 0 10px 30px rgba(79,70,229,.45)
+        }
+
+        .shell {
+            padding: 26px 0 40px
         }
 
         .panel {
-            margin-top: 22px;
-            background: var(--card);
+            border-radius: 22px;
             border: 1px solid var(--border);
-            border-radius: 18px;
-            padding: 18px
+            background: radial-gradient(circle at top,rgba(15,23,42,.92),#020617 65%);
+            box-shadow: var(--shadow);
+            padding: 22px
         }
 
         .kicker {
             color: var(--muted);
             font-size: 13px;
+            margin-bottom: 6px
+        }
+
+        h1 {
+            font-size: 28px;
+            letter-spacing: -.02em;
             margin-bottom: 10px
         }
 
-        .success {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 26px 16px;
-            text-align: center
-        }
-
-        .tick {
-            width: 60px;
-            height: 60px;
-            border-radius: 999px;
-            background: linear-gradient(140deg,var(--green),#14532d);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-            box-shadow: 0 0 20px rgba(34,197,94,.5);
-            margin-bottom: 12px;
-        }
-
-        .meta {
-            margin-top: 10px;
+        .sub {
             color: var(--muted);
-            font-size: 13px;
-            line-height: 1.7
+            font-size: 14px;
+            margin-bottom: 18px;
+            max-width: 900px
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px
+        }
+
+        @media(max-width:920px) {
+            .grid {
+                grid-template-columns: 1fr
+            }
         }
 
         .card {
-            margin-top: 14px;
-            border: 1px solid rgba(96,165,250,.35);
-            background: radial-gradient(circle at top left,rgba(96,165,250,.12),rgba(15,23,42,.95));
-            border-radius: 16px;
-            padding: 14px;
-            text-align: left
+            border-radius: 18px;
+            border: 1px solid rgba(148,163,184,.25);
+            background: rgba(2,6,23,.35);
+            padding: 18px
         }
 
         .row {
             display: flex;
             justify-content: space-between;
-            gap: 10px;
-            color: var(--muted);
-            font-size: 12px;
-            margin-top: 6px
+            gap: 12px;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(148,163,184,.14)
         }
 
-            .row strong {
-                color: #e5e7eb;
-                font-weight: 650
+            .row:last-child {
+                border-bottom: none
             }
+
+        .label {
+            color: var(--muted);
+            font-size: 12px
+        }
+
+        .val {
+            font-size: 14px
+        }
+
+        .big {
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: -.02em
+        }
+
+        .tick {
+            width: 58px;
+            height: 58px;
+            border-radius: 18px;
+            background: linear-gradient(135deg,#22c55e,#15803d);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            margin-bottom: 10px;
+            box-shadow: 0 18px 40px rgba(34,197,94,.25)
+        }
+
+        .fine {
+            color: var(--muted);
+            font-size: 12px
+        }
 
         .actions {
             display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 16px;
             gap: 10px;
-            flex-wrap: wrap;
-            justify-content: center;
-            margin-top: 16px
+            flex-wrap: wrap
+        }
+
+        .strip {
+            margin-top: 14px;
+            border-radius: 14px;
+            border: 1px solid rgba(148,163,184,.18);
+            background: rgba(15,23,42,.55);
+            padding: 12px 14px
         }
     </style>
 </head>
+
 <body>
     <header>
         <div class="wrap nav">
-            <div class="logo">
+            <div class="brand">
                 <div class="logo-mark"></div>
                 <strong>GiftBox</strong>
             </div>
-            <a class="btn" href="../index.html">Home</a>
+            <a class="btn" href="recipient-view.html">Back to Receiver Home</a>
         </div>
     </header>
 
-    <main class="wrap">
-        <div class="panel">
-            <div class="kicker">Receiver Step 5/5 — Gift accepted</div>
+    <main class="wrap shell">
+        <section class="panel">
+            <div class="kicker">Receiver Step 5/5 — Completed</div>
+            <div class="tick">✓</div>
+            <h1>Gift accepted — broker processing started</h1>
+            <p class="sub">
+                GiftBox has submitted your verified acceptance to a <b>SEBI-registered broker</b> (conceptual in MVP).
+                The broker will validate demat/KYC and execute the investment.
+            </p>
 
-            <div class="success">
-                <div class="tick">✓</div>
-                <h2>Gift accepted successfully</h2>
-                <div class="meta">
-                    The broker will now process your gift based on your verification status.<br />
-                    You’ll receive a confirmation once executed.
+            <div class="grid">
+                <div class="card">
+                    <h3 style="margin-bottom:10px;">What you will see</h3>
+                    <div class="row"><div class="label">Gift amount</div><div class="val big" id="amt">₹—</div></div>
+                    <div class="row"><div class="label">From</div><div class="val" id="from">—</div></div>
+                    <div class="row"><div class="label">Preferred stock / theme</div><div class="val" id="theme">—</div></div>
+                    <div class="row"><div class="label">Status</div><div class="val">Sent to broker for execution</div></div>
                 </div>
 
-                <div class="card" id="summaryCard">
-                    <!-- populated by JS -->
-                </div>
+                <div class="card">
+                    <h3 style="margin-bottom:10px;">Next milestones</h3>
+                    <div class="row"><div class="val">1) Demat found</div><div class="val">Faster settlement</div></div>
+                    <div class="row"><div class="val">2) No demat</div><div class="val">Broker requests KYC</div></div>
+                    <div class="row"><div class="val">3) Execution</div><div class="val">Order placed by broker</div></div>
+                    <div class="row"><div class="val">4) Settlement</div><div class="val">Asset credited to demat</div></div>
 
-                <div class="actions">
-                    <a class="btn" href="recipient-step2-view.html">View gift again</a>
-                    <a class="btn btn-blue" href="../index.html">Done</a>
+                    <div class="strip">
+                        <div class="fine">
+                            <b>Execution Assistance (SEBI-aligned)</b><br />
+                            GiftBox provides routing & tracking only. Broker executes orders and maintains investor protections.
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
+
+            <div class="actions">
+                <span class="fine">MVP simulation: status updates are illustrative.</span>
+                <a class="btn btn-primary" href="recipient-view.html">Done →</a>
+            </div>
+        </section>
     </main>
 
     <script>
-(function(){
-  const gift = JSON.parse(localStorage.getItem("giftbox_gift") || "{}");
-  const broker = JSON.parse(localStorage.getItem("giftbox_broker_status") || "{}");
-  const receiver = JSON.parse(localStorage.getItem("giftbox_receiver") || "{}");
+        function safe(v, f = "—") { if (v === undefined || v === null) return f; const s = String(v).trim(); return s ? s : f; }
+        function getGift() { try { return JSON.parse(localStorage.getItem("giftbox_gift") || "{}"); } catch (e) { return {}; } }
+        function formatINR(n) { const num = Number(n); if (!isFinite(num)) return "₹—"; return "₹" + num.toLocaleString("en-IN"); }
 
-  const amount = gift.amount ? `₹${gift.amount}` : "₹5,000";
-  const theme = gift.preferredStock || gift.theme || "—";
-  const from = gift.gifterPhone || "Verified sender";
-  const phone = receiver.phone || gift.recipientPhone || "—";
+        // Guard
+        if (localStorage.getItem("giftbox_receiver_verified") !== "true") {
+            window.location.href = "step3-verify.html";
+        }
 
-  const statusText = broker.hasDemat ? "FAST PATH (demat found)" : "KYC REQUIRED (simulated)";
-  const expected = broker.hasDemat ? "T+1 expected" : "T+2 expected (after KYC)";
-
-  document.getElementById("summaryCard").innerHTML = `
-    <div class="row"><span>Amount received</span><strong>${amount}</strong></div>
-    <div class="row"><span>Preferred theme</span><strong>${theme}</strong></div>
-    <div class="row"><span>From</span><strong>${from}</strong></div>
-    <div class="row"><span>Your phone</span><strong>${phone}</strong></div>
-    <div class="row"><span>Broker status</span><strong>${statusText}</strong></div>
-    <div class="row"><span>Timeline</span><strong>${expected}</strong></div>
-  `;
-})();
+        const gift = getGift();
+        document.getElementById("amt").textContent = formatINR(gift.amount);
+        document.getElementById("from").textContent = "Gift from " + safe(gift.gifterPhone);
+        document.getElementById("theme").textContent = safe(gift.theme, "—");
     </script>
 </body>
 </html>
