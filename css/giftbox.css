@@ -810,6 +810,26 @@ section {
         gap: 6px;
     }
 }
+.nav-signin {
+    margin-left: 12px;
+    font-weight: 500;
+    color: #93c5fd;
+    text-decoration: none;
+}
+
+    .nav-signin:hover {
+        color: #bfdbfe;
+    }
+.btn-red {
+    background: linear-gradient(135deg, #ef4444, #b91c1c);
+    color: #fff;
+    box-shadow: 0 0 0 2px rgba(239,68,68,.25);
+}
+
+    .btn-red:hover {
+        filter: brightness(1.05);
+    }
+
 
 /* ---------- CTA band ---------- */
 
