@@ -2,216 +2,213 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <title>GiftBox — New Gift Notification</title>
+    <title>GiftBox — New Gift Received</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+
     <style>
+        /* ========== RESET ========== */
         *, *::before, *::after {
             box-sizing: border-box;
             margin: 0;
-            padding: 0
+            padding: 0;
         }
 
         :root {
-            --fg: #f7f7ff;
-            --muted: #9ca3af;
-            --border: rgba(148,163,184,.35);
-            --bg1: #111827;
-            --bg2: #020617;
-            --card: rgba(15,23,42,.9);
-            --blue: #3b82f6;
-            --blue2: #60a5fa;
+            --bg: #0b141a;
+            --chat-bg: #111b21;
+            --bubble: #1f2c34;
+            --accent: #25d366;
+            --text: #e9edef;
+            --muted: #8696a0;
+            --border: rgba(134,150,160,.25);
         }
 
         body {
-            font-family: system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
-            background: radial-gradient(circle at top,var(--bg1) 0,var(--bg2) 55%);
-            color: var(--fg);
-            min-height: 100vh
-        }
-
-        .wrap {
-            max-width: 920px;
-            margin: 0 auto;
-            padding: 20px
-        }
-
-        header {
-            border-bottom: 1px solid var(--border);
-            background: rgba(2,6,23,.85)
-        }
-
-        .nav {
+            font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            gap: 12px;
-            padding: 14px 0
+            justify-content: center;
         }
 
-        .logo {
+        /* ========== PHONE FRAME ========== */
+        .phone {
+            width: 100%;
+            max-width: 380px;
+            background: var(--chat-bg);
+            border-radius: 22px;
+            box-shadow: 0 25px 80px rgba(0,0,0,.6);
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        /* ========== HEADER ========== */
+        .header {
             display: flex;
+            align-items: center;
             gap: 10px;
-            align-items: center
+            padding: 14px;
+            background: #202c33;
+            border-bottom: 1px solid var(--border);
         }
 
-        .logo-mark {
-            width: 26px;
-            height: 26px;
-            border-radius: 10px;
-            background: conic-gradient(from 160deg,#6366f1,#ec4899,#f97316,#22c55e,#6366f1)
+        .avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: conic-gradient( from 140deg, #6366f1, #ec4899, #f97316, #22c55e, #6366f1 );
+        }
+
+        .header-text {
+            line-height: 1.1;
+        }
+
+            .header-text strong {
+                font-size: 14px;
+                display: block;
+            }
+
+            .header-text span {
+                font-size: 11px;
+                color: var(--muted);
+            }
+
+        /* ========== CHAT AREA ========== */
+        .chat {
+            padding: 18px 14px;
+            background: radial-gradient(circle at top, rgba(255,255,255,.04), transparent 60%), var(--chat-bg);
+        }
+
+        .time {
+            text-align: center;
+            font-size: 11px;
+            color: var(--muted);
+            margin-bottom: 10px;
+        }
+
+        .bubble {
+            background: var(--bubble);
+            border-radius: 14px;
+            padding: 12px 14px;
+            font-size: 13px;
+            line-height: 1.4;
+            box-shadow: 0 6px 18px rgba(0,0,0,.3);
+        }
+
+            .bubble strong {
+                color: #fff;
+            }
+
+        .amount {
+            font-size: 22px;
+            font-weight: 700;
+            margin: 6px 0;
+            color: #25d366;
+        }
+
+        .message {
+            margin-top: 6px;
+            font-style: italic;
+            color: #d1d7db;
+        }
+
+        .trust {
+            margin-top: 10px;
+            font-size: 11px;
+            color: var(--muted);
+        }
+
+        /* ========== CTA ========== */
+        .actions {
+            padding: 14px;
+            border-top: 1px solid var(--border);
+            background: #202c33;
         }
 
         .btn {
+            width: 100%;
+            border: none;
             border-radius: 999px;
-            border: 1px solid var(--border);
-            padding: 7px 14px;
-            font-size: 13px;
-            background: transparent;
-            color: var(--fg);
+            padding: 12px;
+            font-size: 14px;
+            font-weight: 600;
             cursor: pointer;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px
+            background: linear-gradient(135deg, #25d366, #1fa855);
+            color: #062e18;
         }
 
             .btn:hover {
-                background: rgba(15,23,42,.8);
-                transform: translateY(-1px)
+                filter: brightness(1.05);
             }
 
-        .btn-blue {
-            background: linear-gradient(135deg,var(--blue),#2563eb);
-            border: none
-        }
-
-        .panel {
-            margin-top: 22px;
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 18px;
-            padding: 18px
-        }
-
-        .kicker {
+        .note {
+            text-align: center;
+            font-size: 11px;
             color: var(--muted);
-            font-size: 13px;
-            margin-bottom: 10px
-        }
-
-        .card {
-            border: 1px solid rgba(96,165,250,.35);
-            background: radial-gradient(circle at top left,rgba(96,165,250,.12),rgba(15,23,42,.95));
-            border-radius: 16px;
-            padding: 16px
-        }
-
-        .msg {
-            white-space: pre-line;
-            color: #e5e7eb;
-            font-size: 14px;
-            line-height: 1.5
-        }
-
-        .row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            align-items: center;
-            justify-content: space-between;
-            margin-top: 14px
-        }
-
-        .pill {
-            font-size: 12px;
-            color: #cfe3ff;
-            border: 1px solid rgba(96,165,250,.35);
-            padding: 4px 10px;
-            border-radius: 999px;
-            background: rgba(59,130,246,.12)
-        }
-
-        .muted {
-            color: var(--muted);
-            font-size: 12px;
-            margin-top: 10px
-        }
-
-        .input {
-            width: 100%;
-            margin-top: 10px;
-            padding: 10px 12px;
-            border-radius: 12px;
-            border: 1px solid var(--border);
-            background: rgba(15,23,42,.95);
-            color: var(--fg)
+            margin-top: 8px;
         }
     </style>
 </head>
+
 <body>
-    <header>
-        <div class="wrap nav">
-            <div class="logo">
-                <div class="logo-mark"></div>
+
+    <div class="phone">
+
+        <!-- Header -->
+        <div class="header">
+            <div class="avatar"></div>
+            <div class="header-text">
                 <strong>GiftBox</strong>
+                <span>Business Account</span>
             </div>
-            <a class="btn" href="../index.html">Home</a>
         </div>
-    </header>
 
-    <main class="wrap">
-        <div class="panel">
-            <div class="kicker">Receiver Step 1/5 — Notification simulation</div>
-            <h2 style="margin-bottom:10px;">🎁 New gift message (SMS/WhatsApp preview)</h2>
+        <!-- Chat -->
+        <div class="chat">
+            <div class="time">Today</div>
 
-            <div class="card">
-                <div class="pill">No payment required • Secure • Broker verified</div>
-                <div id="msg" class="msg" style="margin-top:10px;"></div>
+            <div class="bubble">
+                🎁 <strong>You’ve received an investment gift!</strong>
 
-                <input id="claimUrl" class="input" readonly />
-                <div class="row">
-                    <a id="openClaimBtn" class="btn btn-blue" href="#">Open claim link</a>
-                    <button class="btn" onclick="copyLink()">Copy link</button>
+                <div class="amount" id="giftAmount">₹—</div>
+
+                <div id="giftMessage" class="message">
+                    A gift has been sent to you.
                 </div>
 
-                <div class="muted">
-                    This page simulates how the receiver sees the gift invite. In real life, this is SMS/WhatsApp.
+                <div class="trust">
+                    Funds are routed to a SEBI-registered broker.
+                    Demat is verified automatically via your phone number.
                 </div>
             </div>
         </div>
-    </main>
+
+        <!-- Actions -->
+        <div class="actions">
+            <button class="btn" onclick="openGift()">Open Gift</button>
+            <div class="note">
+                No charges until your identity is verified
+            </div>
+        </div>
+
+    </div>
 
     <script>
-(function(){
-  const gift = JSON.parse(localStorage.getItem("giftbox_gift") || "{}");
-  const amount = gift.amount ? `₹${gift.amount}` : "₹5,000";
-  const sender = gift.gifterPhone ? `a verified GiftBox user (${gift.gifterPhone})` : "a verified GiftBox user";
-  const claim = "ABCD123"; // static MVP claim id
-  const claimLink = `${location.origin}${location.pathname.replace(/\\/pages\\/.*$/,'')}/pages/recipient-step2-view.html?claim=${claim}`;
+        // Load gift data
+        const data = JSON.parse(localStorage.getItem("giftbox_gift")) || {};
 
-  const message =
-`🎁 You’ve received an investment gift of ${amount} from ${sender}
+        document.getElementById("giftAmount").textContent =
+            data.amount ? "₹" + data.amount : "₹—";
 
-Accept your gift:
-👉 ${claimLink}
+        document.getElementById("giftMessage").textContent =
+            data.occasion || "You’ve received a GiftBox investment gift.";
 
-✅ No payment required
-✅ Funds already reserved by the sender`;
-
-  document.getElementById("msg").textContent = message;
-  document.getElementById("claimUrl").value = claimLink;
-
-  const btn = document.getElementById("openClaimBtn");
-  btn.href = `recipient-step2-view.html?claim=${claim}`;
-})();
-
-function copyLink(){
-  const input = document.getElementById("claimUrl");
-  input.select();
-  input.setSelectionRange(0, 99999);
-  document.execCommand("copy");
-  alert("Claim link copied!");
-}
+        function openGift() {
+            window.location.href = "step2-view.html";
+        }
     </script>
+
 </body>
 </html>
