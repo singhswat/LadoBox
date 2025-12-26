@@ -2,42 +2,40 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <title>GiftBox — Verify & Accept Gift</title>
+    <title>GiftBox — Verify & Accept</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <style>
         body {
-            font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-            background: radial-gradient(circle at top, #111827 0%, #020617 55%);
+            font-family: system-ui;
+            background: radial-gradient(circle at top,#111827,#020617);
             color: #f7f7ff;
-            min-height: 100vh;
             margin: 0;
         }
 
         .wrap {
             max-width: 1100px;
-            margin: 0 auto;
-            padding: 24px;
+            margin: auto;
+            padding: 24px
         }
 
         header {
             border-bottom: 1px solid rgba(148,163,184,.35);
-            padding: 16px 0;
+            padding: 16px 0
         }
 
         .logo {
             display: flex;
             align-items: center;
             gap: 10px;
-            font-weight: 700;
-            font-size: 18px;
+            font-weight: 700
         }
 
         .logo-mark {
             width: 26px;
             height: 26px;
             border-radius: 10px;
-            background: conic-gradient(from 160deg,#6366f1,#ec4899,#f97316,#22c55e,#6366f1);
+            background: conic-gradient(from 160deg,#6366f1,#ec4899,#f97316,#22c55e,#6366f1)
         }
 
         .panel {
@@ -45,30 +43,18 @@
             background: rgba(15,23,42,.9);
             border: 1px solid rgba(148,163,184,.35);
             border-radius: 22px;
-            padding: 28px;
-            box-shadow: 0 20px 60px rgba(0,0,0,.45);
-        }
-
-        h1 {
-            margin: 10px 0 6px;
-            font-size: 30px;
-        }
-
-        .sub {
-            color: #9ca3af;
-            font-size: 14px;
-            margin-bottom: 24px;
+            padding: 28px
         }
 
         .grid {
             display: grid;
             grid-template-columns: 1.2fr 1fr;
-            gap: 22px;
+            gap: 22px
         }
 
-        @media (max-width: 900px) {
+        @media(max-width:900px) {
             .grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr
             }
         }
 
@@ -76,65 +62,52 @@
             background: rgba(2,6,23,.7);
             border: 1px solid rgba(148,163,184,.25);
             border-radius: 18px;
-            padding: 22px;
+            padding: 22px
         }
 
         .row {
             display: flex;
             justify-content: space-between;
             padding: 10px 0;
-            border-bottom: 1px solid rgba(148,163,184,.18);
-            font-size: 14px;
+            border-bottom: 1px solid rgba(148,163,184,.18)
         }
 
             .row:last-child {
-                border-bottom: none;
+                border: none
             }
 
         .label {
-            color: #9ca3af;
-        }
-
-        .value {
-            font-weight: 600;
+            color: #9ca3af
         }
 
         .amount {
             font-size: 36px;
-            font-weight: 800;
+            font-weight: 800
         }
 
         .safe {
             margin-top: 14px;
             background: rgba(34,197,94,.15);
             border: 1px solid rgba(34,197,94,.4);
-            color: #dcfce7;
-            padding: 12px 14px;
+            padding: 12px;
             border-radius: 12px;
-            font-size: 13px;
+            font-size: 13px
         }
 
         input {
             width: 100%;
             padding: 12px;
+            margin-top: 10px;
             border-radius: 12px;
             border: 1px solid rgba(148,163,184,.35);
             background: rgba(2,6,23,.8);
-            color: #f7f7ff;
-            font-size: 16px;
-            margin-top: 10px;
-        }
-
-        .hint {
-            font-size: 12px;
-            color: #9ca3af;
-            margin-top: 6px;
+            color: #fff
         }
 
         .actions {
             display: flex;
             justify-content: space-between;
-            margin-top: 24px;
+            margin-top: 24px
         }
 
         .btn {
@@ -142,20 +115,13 @@
             border-radius: 999px;
             border: 1px solid rgba(148,163,184,.35);
             background: transparent;
-            color: #f7f7ff;
-            cursor: pointer;
+            color: #fff;
+            cursor: pointer
         }
 
         .btn-primary {
             background: linear-gradient(135deg,#6366f1,#a855f7);
-            border: none;
-        }
-
-        .footer-note {
-            text-align: right;
-            font-size: 12px;
-            color: #9ca3af;
-            margin-top: 10px;
+            border: none
         }
     </style>
 </head>
@@ -163,11 +129,9 @@
 <body>
 
     <header>
-        <div class="wrap">
-            <div class="logo">
-                <div class="logo-mark"></div>
-                GiftBox
-            </div>
+        <div class="wrap logo">
+            <div class="logo-mark"></div>
+            GiftBox
         </div>
     </header>
 
@@ -176,15 +140,14 @@
 
             <div class="label">Receiver Step 3 / 5 — Verify & consent</div>
             <h1>Verify your phone to accept this gift</h1>
-            <p class="sub">
+
+            <p style="color:#9ca3af">
                 GiftBox provides <strong>execution assistance only</strong>.
                 Investments are executed by <strong>SEBI-registered brokers</strong>.
-                We do not hold funds or securities.
             </p>
 
             <div class="grid">
 
-                <!-- Gift Details -->
                 <div class="card">
                     <h3>Gift details</h3>
 
@@ -195,40 +158,36 @@
 
                     <div class="row">
                         <span class="label">From</span>
-                        <span class="value" id="giftFrom">—</span>
+                        <span id="giftFrom">—</span>
                     </div>
 
                     <div class="row">
                         <span class="label">Preferred stock / theme</span>
-                        <span class="value" id="giftTheme">—</span>
+                        <span id="giftTheme">—</span>
                     </div>
 
                     <div class="row">
                         <span class="label">Message</span>
-                        <span class="value" id="giftMessage">—</span>
+                        <span id="giftMessage">—</span>
                     </div>
 
                     <div class="safe">
-                        ✔ No charges to you. Broker execution proceeds only after verification.
+                        ✔ No charge to you. Broker execution begins after verification.
                     </div>
 
-                    <label style="margin-top:16px;">Enter OTP</label>
+                    <label>Enter OTP</label>
                     <input id="otp" value="123456" />
-                    <div class="hint">MVP simulation — use <strong>123456</strong></div>
+                    <div style="font-size:12px;color:#9ca3af">MVP demo — use 123456</div>
                 </div>
 
-                <!-- What happens next -->
                 <div class="card">
                     <h3>What happens next?</h3>
-                    <ol class="sub">
-                        <li>Phone verified via OTP</li>
-                        <li>Broker checks if a demat exists</li>
-                        <li>If yes → faster execution</li>
-                        <li>If not → broker requests KYC to claim gift</li>
+                    <ol style="color:#9ca3af;font-size:14px">
+                        <li>OTP verified</li>
+                        <li>Broker checks demat</li>
+                        <li>KYC if required</li>
+                        <li>Shares executed</li>
                     </ol>
-                    <p class="hint">
-                        This is a demo flow for the MVP. Status updates are illustrative.
-                    </p>
                 </div>
 
             </div>
@@ -238,17 +197,12 @@
                 <button class="btn btn-primary" onclick="verifyOtp()">Verify →</button>
             </div>
 
-            <div class="footer-note">
-                By verifying, you confirm you are the intended recipient.
-            </div>
-
         </section>
     </main>
 
     <script>
-        const gift = JSON.parse(localStorage.getItem("giftbox_gift") || "{}");
-
-        console.log("Gift payload at Step 3:", gift);
+        const gift = JSON.parse(localStorage.getItem("giftbox_gift") || {});
+        console.log("Gift payload Step 3:", gift);
 
         document.getElementById("giftAmount").textContent =
             gift.amount ? "₹" + Number(gift.amount).toLocaleString("en-IN") : "—";
@@ -257,15 +211,14 @@
             gift.gifterPhone ? "Gift from " + gift.gifterPhone : "—";
 
         document.getElementById("giftTheme").textContent =
-            gift.theme && gift.theme.trim() ? gift.theme : "—";
+            gift.preferredStock || gift.theme || "—";
 
         document.getElementById("giftMessage").textContent =
-            gift.occasion && gift.occasion.trim() ? gift.occasion : "—";
+            gift.message || gift.occasion || "—";
 
         function verifyOtp() {
-            const otp = document.getElementById("otp").value;
-            if (otp !== "123456") {
-                alert("Invalid OTP (use 123456 for MVP)");
+            if (document.getElementById("otp").value !== "123456") {
+                alert("Invalid OTP");
                 return;
             }
             window.location.href = "step4-routing.html";

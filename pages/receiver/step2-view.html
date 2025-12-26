@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <title>GiftBox — Claim Gift</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+
     <style>
         *, *::before, *::after {
             box-sizing: border-box;
@@ -19,19 +20,18 @@
             --bg2: #020617;
             --card: rgba(15,23,42,.9);
             --blue: #3b82f6;
-            --blue2: #60a5fa;
         }
 
         body {
-            font-family: system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
-            background: radial-gradient(circle at top,var(--bg1) 0,var(--bg2) 55%);
+            font-family: system-ui;
+            background: radial-gradient(circle at top,var(--bg1),var(--bg2));
             color: var(--fg);
-            min-height: 100vh
+            min-height: 100vh;
         }
 
         .wrap {
             max-width: 920px;
-            margin: 0 auto;
+            margin: auto;
             padding: 20px
         }
 
@@ -44,7 +44,6 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 12px;
             padding: 14px 0
         }
 
@@ -66,19 +65,11 @@
             border: 1px solid var(--border);
             padding: 7px 14px;
             font-size: 13px;
-            background: transparent;
             color: var(--fg);
-            cursor: pointer;
             text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px
+            background: transparent;
+            cursor: pointer
         }
-
-            .btn:hover {
-                background: rgba(15,23,42,.8);
-                transform: translateY(-1px)
-            }
 
         .btn-blue {
             background: linear-gradient(135deg,var(--blue),#2563eb);
@@ -99,7 +90,7 @@
             gap: 14px
         }
 
-        @media (max-width:860px) {
+        @media(max-width:860px) {
             .grid {
                 grid-template-columns: 1fr
             }
@@ -112,49 +103,41 @@
             padding: 16px
         }
 
-        .kicker {
-            color: var(--muted);
-            font-size: 13px;
-            margin-bottom: 10px
-        }
-
-        .big {
-            font-size: 34px;
-            font-weight: 750;
-            letter-spacing: -.02em
-        }
-
         .label {
             color: var(--muted);
             font-size: 12px;
             margin-top: 10px
         }
 
+        .big {
+            font-size: 34px;
+            font-weight: 750
+        }
+
         .value {
-            color: #e5e7eb;
             margin-top: 3px
         }
 
         .trust {
             margin-top: 12px;
-            color: #cfe3ff;
             font-size: 12px;
             border: 1px solid rgba(96,165,250,.35);
             padding: 8px 10px;
             border-radius: 14px;
-            background: rgba(59,130,246,.10)
+            background: rgba(59,130,246,.1)
         }
 
         .actions {
             display: flex;
             gap: 10px;
-            flex-wrap: wrap;
             justify-content: flex-end;
             margin-top: 14px
         }
     </style>
 </head>
+
 <body>
+
     <header>
         <div class="wrap nav">
             <div class="logo">
@@ -167,40 +150,41 @@
 
     <main class="wrap">
         <div class="panel">
-            <div class="kicker">Receiver Step 2/5 — View gift details</div>
-            <h2 style="margin-bottom:10px;">🎁 You’ve received a GiftBox</h2>
+            <div class="label">Receiver Step 2 / 5 — View gift</div>
+            <h2 style="margin:10px 0">🎁 You’ve received a GiftBox</h2>
 
             <div class="grid">
                 <div class="card">
+
                     <div class="label">Gift amount</div>
-                    <div id="amt" class="big">₹5,000</div>
+                    <div id="amt" class="big">₹—</div>
 
                     <div class="label">From</div>
-                    <div id="from" class="value">A verified GiftBox sender</div>
-
-                    <div class="label">Message</div>
-                    <div id="msg" class="value">—</div>
+                    <div id="from" class="value">—</div>
 
                     <div class="label">Preferred stock / theme</div>
                     <div id="stock" class="value">—</div>
 
+                    <div class="label">Message</div>
+                    <div id="msg" class="value">—</div>
+
                     <div class="trust">
-                        ✅ You will not be charged. The sender has already reserved the gift amount.
+                        ✅ Funds are reserved by the sender. You will not be charged.
                     </div>
 
                     <div class="actions">
                         <a class="btn" href="../index.html">Close</a>
-                        <a class="btn btn-blue" id="acceptBtn" href="step3-verify.html">Accept Gift</a>
+                        <a class="btn btn-blue" id="acceptBtn">Accept Gift</a>
                     </div>
                 </div>
 
                 <div class="card">
-                    <h3 style="margin-bottom:8px;">What happens next?</h3>
-                    <div style="color:var(--muted);font-size:13px;line-height:1.6">
-                        1) You verify your phone via OTP<br />
-                        2) Broker checks if you already have a demat<br />
-                        3) If yes → faster processing<br />
-                        4) If not → you complete KYC to claim
+                    <h3>What happens next?</h3>
+                    <div style="font-size:13px;color:var(--muted);line-height:1.6">
+                        1) Verify phone via OTP<br>
+                        2) Broker checks demat<br>
+                        3) If needed → complete KYC<br>
+                        4) Shares executed by broker
                     </div>
                 </div>
             </div>
@@ -208,20 +192,29 @@
     </main>
 
     <script>
-(function(){
-  const params = new URLSearchParams(location.search);
-  const claim = params.get("claim") || "ABCD123";
+        (function () {
+            const params = new URLSearchParams(location.search);
+            const claim = params.get("claim") || "ABCD123";
 
-  const gift = JSON.parse(localStorage.getItem("giftbox_gift") || "{}");
-  const amount = gift.amount ? `₹${gift.amount}` : "₹5,000";
+            const gift = JSON.parse(localStorage.getItem("giftbox_gift") || "{}");
+            console.log("Gift payload Step 2:", gift);
 
-  document.getElementById("amt").textContent = amount;
-  document.getElementById("from").textContent = gift.gifterPhone ? `Gift from ${gift.gifterPhone}` : "Gift from a verified GiftBox sender";
-  document.getElementById("msg").textContent = gift.message || gift.occasion || "—";
-  document.getElementById("stock").textContent = gift.preferredStock || gift.theme || "—";
+            document.getElementById("amt").textContent =
+                gift.amount ? "₹" + Number(gift.amount).toLocaleString("en-IN") : "₹—";
 
-  document.getElementById("acceptBtn").href = `step3-verify.html?claim=${encodeURIComponent(claim)}`;
-})();
+            document.getElementById("from").textContent =
+                gift.gifterPhone ? "Gift from " + gift.gifterPhone : "Gift from a verified sender";
+
+            document.getElementById("stock").textContent =
+                gift.preferredStock || gift.theme || "—";
+
+            document.getElementById("msg").textContent =
+                gift.message || gift.occasion || "—";
+
+            document.getElementById("acceptBtn").href =
+                "step3-verify.html?claim=" + encodeURIComponent(claim);
+        })();
     </script>
+
 </body>
 </html>
