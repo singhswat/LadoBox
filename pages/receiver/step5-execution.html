@@ -1,0 +1,188 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>GiftBox — Broker Execution</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <style>
+        body {
+            font-family: system-ui;
+            background: radial-gradient(circle at top,#111827,#020617);
+            color:#f7f7ff;
+            margin:0;
+        }
+        .wrap { max-width:900px; margin:auto; padding:24px }
+        header {
+            border-bottom:1px solid rgba(148,163,184,.35);
+            padding:16px 0;
+        }
+        .logo {
+            display:flex; align-items:center; gap:10px; font-weight:700;
+        }
+        .logo-mark {
+            width:26px;height:26px;border-radius:10px;
+            background:conic-gradient(from 160deg,#6366f1,#ec4899,#f97316,#22c55e,#6366f1)
+        }
+        .panel {
+            margin-top:28px;
+            background:rgba(15,23,42,.9);
+            border:1px solid rgba(148,163,184,.35);
+            border-radius:22px;
+            padding:28px;
+        }
+        .card {
+            background:rgba(2,6,23,.7);
+            border:1px solid rgba(148,163,184,.25);
+            border-radius:18px;
+            padding:20px;
+            margin-top:16px;
+        }
+        .row {
+            display:flex;
+            justify-content:space-between;
+            padding:8px 0;
+            font-size:14px;
+        }
+        .label { color:#9ca3af }
+        .cta {
+            margin-top:24px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+        }
+        .btn {
+            padding:12px 22px;
+            border-radius:999px;
+            border:1px solid rgba(148,163,184,.35);
+            background:transparent;
+            color:#fff;
+            cursor:pointer;
+            font-size:15px;
+        }
+        .btn-primary {
+            background:linear-gradient(135deg,#22c55e,#16a34a);
+            border:none;
+            font-weight:700;
+        }
+        .warning {
+            margin-top:18px;
+            font-size:12px;
+            color:#9ca3af;
+            line-height:1.6;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="wrap logo">
+        <div class="logo-mark"></div>
+        GiftBox
+    </div>
+</header>
+
+<main class="wrap">
+<section class="panel">
+
+    <div class="label">Receiver Step 5 / 5 — Broker execution</div>
+    <h1>Confirm & proceed to broker</h1>
+
+    <p style="color:#9ca3af">
+        You are about to be redirected to your selected broker to complete
+        the stock purchase. GiftBox does not place trades or hold funds.
+    </p>
+
+    <div class="card">
+        <h3>Execution summary</h3>
+
+        <div class="row">
+            <span class="label">Gift amount</span>
+            <span id="amount">—</span>
+        </div>
+
+        <div class="row">
+            <span class="label">Preferred stock</span>
+            <span id="stock">—</span>
+        </div>
+
+        <div class="row">
+            <span class="label">Selected demat</span>
+            <span id="demat">—</span>
+        </div>
+
+        <div class="row">
+            <span class="label">Broker</span>
+            <span>Zerodha</span>
+        </div>
+
+        <div class="row">
+            <span class="label">Execution type</span>
+            <span>Market order</span>
+        </div>
+    </div>
+
+    <div class="cta">
+        <button class="btn" onclick="history.back()">Back</button>
+        <button class="btn btn-primary" onclick="handoffToBroker()">
+            Proceed to Zerodha →
+        </button>
+    </div>
+
+    <div class="warning">
+        By continuing, you consent to share this execution intent with the
+        broker. Order quantity and final execution price are determined by
+        the broker at the time of execution.
+    </div>
+
+</section>
+</main>
+
+<script>
+const gift = JSON.parse(localStorage.getItem("giftbox_gift") || {});
+const demat = localStorage.getItem("giftbox_selected_demat");
+
+document.getElementById("amount").textContent =
+    gift.amount ? "₹" + Number(gift.amount).toLocaleString("en-IN") : "—";
+
+document.getElementById("stock").textContent =
+    gift.preferredStock || gift.theme || "—";
+
+document.getElementById("demat").textContent =
+    demat || "—";
+
+function handoffToBroker() {
+
+    // Execution intent (what GiftBox hands off)
+    const executionIntent = {
+        giftId: "ABCD123",
+        amount: gift.amount,
+        preferredStock: gift.preferredStock || gift.theme,
+        dematAccount: demat,
+        executionType: "MARKET",
+        consentAt: new Date().toISOString(),
+        source: "GiftBox"
+    };
+
+    console.log("Execution intent sent to broker:", executionIntent);
+
+    /*
+      MVP SIMULATION:
+      In production this becomes:
+      - Zerodha OAuth / Deep Link
+      - or UMI / Broker Aggregator redirect
+    */
+
+    alert(
+        "Redirecting to Zerodha...\n\n" +
+        "This simulates broker authentication and order placement."
+    );
+
+    // Simulated redirect
+    window.location.href = "step6-success.html";
+}
+</script>
+
+</body>
+</html>
