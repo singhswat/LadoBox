@@ -1,0 +1,217 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>GiftBox — New Gift Notification</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        :root {
+            --fg: #f7f7ff;
+            --muted: #9ca3af;
+            --border: rgba(148,163,184,.35);
+            --bg1: #111827;
+            --bg2: #020617;
+            --card: rgba(15,23,42,.9);
+            --blue: #3b82f6;
+            --blue2: #60a5fa;
+        }
+
+        body {
+            font-family: system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+            background: radial-gradient(circle at top,var(--bg1) 0,var(--bg2) 55%);
+            color: var(--fg);
+            min-height: 100vh
+        }
+
+        .wrap {
+            max-width: 920px;
+            margin: 0 auto;
+            padding: 20px
+        }
+
+        header {
+            border-bottom: 1px solid var(--border);
+            background: rgba(2,6,23,.85)
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 0
+        }
+
+        .logo {
+            display: flex;
+            gap: 10px;
+            align-items: center
+        }
+
+        .logo-mark {
+            width: 26px;
+            height: 26px;
+            border-radius: 10px;
+            background: conic-gradient(from 160deg,#6366f1,#ec4899,#f97316,#22c55e,#6366f1)
+        }
+
+        .btn {
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            padding: 7px 14px;
+            font-size: 13px;
+            background: transparent;
+            color: var(--fg);
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px
+        }
+
+            .btn:hover {
+                background: rgba(15,23,42,.8);
+                transform: translateY(-1px)
+            }
+
+        .btn-blue {
+            background: linear-gradient(135deg,var(--blue),#2563eb);
+            border: none
+        }
+
+        .panel {
+            margin-top: 22px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 18px
+        }
+
+        .kicker {
+            color: var(--muted);
+            font-size: 13px;
+            margin-bottom: 10px
+        }
+
+        .card {
+            border: 1px solid rgba(96,165,250,.35);
+            background: radial-gradient(circle at top left,rgba(96,165,250,.12),rgba(15,23,42,.95));
+            border-radius: 16px;
+            padding: 16px
+        }
+
+        .msg {
+            white-space: pre-line;
+            color: #e5e7eb;
+            font-size: 14px;
+            line-height: 1.5
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 14px
+        }
+
+        .pill {
+            font-size: 12px;
+            color: #cfe3ff;
+            border: 1px solid rgba(96,165,250,.35);
+            padding: 4px 10px;
+            border-radius: 999px;
+            background: rgba(59,130,246,.12)
+        }
+
+        .muted {
+            color: var(--muted);
+            font-size: 12px;
+            margin-top: 10px
+        }
+
+        .input {
+            width: 100%;
+            margin-top: 10px;
+            padding: 10px 12px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            background: rgba(15,23,42,.95);
+            color: var(--fg)
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="wrap nav">
+            <div class="logo">
+                <div class="logo-mark"></div>
+                <strong>GiftBox</strong>
+            </div>
+            <a class="btn" href="../index.html">Home</a>
+        </div>
+    </header>
+
+    <main class="wrap">
+        <div class="panel">
+            <div class="kicker">Receiver Step 1/5 — Notification simulation</div>
+            <h2 style="margin-bottom:10px;">🎁 New gift message (SMS/WhatsApp preview)</h2>
+
+            <div class="card">
+                <div class="pill">No payment required • Secure • Broker verified</div>
+                <div id="msg" class="msg" style="margin-top:10px;"></div>
+
+                <input id="claimUrl" class="input" readonly />
+                <div class="row">
+                    <a id="openClaimBtn" class="btn btn-blue" href="#">Open claim link</a>
+                    <button class="btn" onclick="copyLink()">Copy link</button>
+                </div>
+
+                <div class="muted">
+                    This page simulates how the receiver sees the gift invite. In real life, this is SMS/WhatsApp.
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+(function(){
+  const gift = JSON.parse(localStorage.getItem("giftbox_gift") || "{}");
+  const amount = gift.amount ? `₹${gift.amount}` : "₹5,000";
+  const sender = gift.gifterPhone ? `a verified GiftBox user (${gift.gifterPhone})` : "a verified GiftBox user";
+  const claim = "ABCD123"; // static MVP claim id
+  const claimLink = `${location.origin}${location.pathname.replace(/\\/pages\\/.*$/,'')}/pages/recipient-step2-view.html?claim=${claim}`;
+
+  const message =
+`🎁 You’ve received an investment gift of ${amount} from ${sender}
+
+Accept your gift:
+👉 ${claimLink}
+
+✅ No payment required
+✅ Funds already reserved by the sender`;
+
+  document.getElementById("msg").textContent = message;
+  document.getElementById("claimUrl").value = claimLink;
+
+  const btn = document.getElementById("openClaimBtn");
+  btn.href = `recipient-step2-view.html?claim=${claim}`;
+})();
+
+function copyLink(){
+  const input = document.getElementById("claimUrl");
+  input.select();
+  input.setSelectionRange(0, 99999);
+  document.execCommand("copy");
+  alert("Claim link copied!");
+}
+    </script>
+</body>
+</html>

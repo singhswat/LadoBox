@@ -1,0 +1,216 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>GiftBox — Broker Routing</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        :root {
+            --fg: #f7f7ff;
+            --muted: #9ca3af;
+            --border: rgba(148,163,184,.35);
+            --bg1: #111827;
+            --bg2: #020617;
+            --card: rgba(15,23,42,.9);
+            --blue: #3b82f6;
+            --green: #22c55e;
+            --amber: #f59e0b;
+        }
+
+        body {
+            font-family: system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+            background: radial-gradient(circle at top,var(--bg1) 0,var(--bg2) 55%);
+            color: var(--fg);
+            min-height: 100vh
+        }
+
+        .wrap {
+            max-width: 920px;
+            margin: 0 auto;
+            padding: 20px
+        }
+
+        header {
+            border-bottom: 1px solid var(--border);
+            background: rgba(2,6,23,.85)
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 0
+        }
+
+        .logo {
+            display: flex;
+            gap: 10px;
+            align-items: center
+        }
+
+        .logo-mark {
+            width: 26px;
+            height: 26px;
+            border-radius: 10px;
+            background: conic-gradient(from 160deg,#6366f1,#ec4899,#f97316,#22c55e,#6366f1)
+        }
+
+        .btn {
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            padding: 7px 14px;
+            font-size: 13px;
+            background: transparent;
+            color: var(--fg);
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px
+        }
+
+        .btn-blue {
+            background: linear-gradient(135deg,var(--blue),#2563eb);
+            border: none
+        }
+
+        .panel {
+            margin-top: 22px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 18px
+        }
+
+        .kicker {
+            color: var(--muted);
+            font-size: 13px;
+            margin-bottom: 10px
+        }
+
+        .card {
+            border: 1px solid rgba(96,165,250,.35);
+            background: radial-gradient(circle at top left,rgba(96,165,250,.12),rgba(15,23,42,.95));
+            border-radius: 16px;
+            padding: 16px
+        }
+
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 8px;
+            color: #e5e7eb
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 999px;
+            background: var(--amber);
+            box-shadow: 0 0 10px rgba(245,158,11,.55)
+        }
+
+            .dot.ok {
+                background: var(--green);
+                box-shadow: 0 0 10px rgba(34,197,94,.55)
+            }
+
+        .row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            margin-top: 14px
+        }
+
+        .muted {
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.6;
+            margin-top: 10px
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="wrap nav">
+            <div class="logo">
+                <div class="logo-mark"></div>
+                <strong>GiftBox</strong>
+            </div>
+            <a class="btn" href="recipient-step3-verify.html">Back</a>
+        </div>
+    </header>
+
+    <main class="wrap">
+        <div class="panel">
+            <div class="kicker">Receiver Step 4/5 — Broker verification</div>
+            <h2 style="margin-bottom:10px;">🏦 Connecting you to a broker</h2>
+
+            <div class="card">
+                <div id="statusLine" class="status">
+                    <span class="dot"></span>
+                    <strong>Checking your demat availability…</strong>
+                </div>
+
+                <div id="details" class="muted"></div>
+
+                <div class="row" style="margin-top:16px;">
+                    <a class="btn" href="../index.html">Close</a>
+                    <button id="primaryBtn" class="btn btn-blue" onclick="goNext()">Continue</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+(function(){
+  const receiver = JSON.parse(localStorage.getItem("giftbox_receiver") || "{}");
+  const gift = JSON.parse(localStorage.getItem("giftbox_gift") || "{}");
+
+  const phone = receiver.phone || gift.recipientPhone || "";
+  // MVP rule: if last digit is even -> demat found, else -> needs KYC
+  const last = phone ? Number(String(phone).slice(-1)) : 1;
+  const hasDemat = !Number.isNaN(last) && last % 2 === 0;
+
+  const statusLine = document.getElementById("statusLine");
+  const dot = statusLine.querySelector(".dot");
+  const details = document.getElementById("details");
+  const primaryBtn = document.getElementById("primaryBtn");
+
+  if (hasDemat){
+    dot.classList.add("ok");
+    statusLine.querySelector("strong").textContent = "✅ Demat account found — fast processing";
+    details.innerHTML =
+      `We found an existing demat linked to your phone.<br/>
+       Your gift will be processed faster by the broker.<br/><br/>
+       <strong>Amount received:</strong> ₹${gift.amount || "5000"}<br/>
+       <strong>Theme:</strong> ${gift.preferredStock || gift.theme || "—"}`;
+    primaryBtn.textContent = "Proceed to confirmation";
+    localStorage.setItem("giftbox_broker_status", JSON.stringify({hasDemat:true, status:"READY_TO_EXECUTE"}));
+  } else {
+    statusLine.querySelector("strong").textContent = "⚠ Demat not found — KYC required to claim";
+    details.innerHTML =
+      `To invest your gift, you’ll need to complete a quick KYC via the broker.<br/>
+       (MVP simulation: we’ll continue without real KYC.)<br/><br/>
+       <strong>Amount received:</strong> ₹${gift.amount || "5000"}<br/>
+       <strong>Theme:</strong> ${gift.preferredStock || gift.theme || "—"}`;
+    primaryBtn.textContent = "Start KYC (simulated)";
+    localStorage.setItem("giftbox_broker_status", JSON.stringify({hasDemat:false, status:"KYC_REQUIRED"}));
+  }
+})();
+
+function goNext(){
+  window.location.href = "recipient-step5-success.html";
+}
+    </script>
+</body>
+</html>
