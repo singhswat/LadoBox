@@ -830,6 +830,25 @@ section {
         filter: brightness(1.05);
     }
 
+/* Claim Gift button – force red CTA */
+.nav-cta .btn-claim {
+    background: linear-gradient(135deg, #ef4444, #b91c1c);
+    color: #ffffff !important;
+    border: 1px solid rgba(239, 68, 68, 0.7);
+    padding: 10px 16px;
+    border-radius: 999px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+}
+
+    /* Hover state */
+    .nav-cta .btn-claim:hover {
+        background: linear-gradient(135deg, #dc2626, #991b1b);
+        transform: translateY(-1px);
+    }
 
 /* ---------- CTA band ---------- */
 
