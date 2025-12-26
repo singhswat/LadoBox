@@ -202,206 +202,210 @@
   </style>
 </head>
 <body>
-<div class="page">
+    <div class="page">
 
-  <!-- Header / Nav -->
-  <header>
-    <div class="wrap nav">
-      <div class="nav-left">
-        <div class="logo-mark"></div>
-        <a href="index.html" class="logo-text">GiftBox</a>
-      </div>
-      <nav class="nav-links">
-        <a href="index.html#how">How it works</a>
-        <a href="index.html#types">Gift types</a>
-        <a href="brokers.html">Marketplace</a>
-        <a href="gift-flow.html">Start a gift</a>
-      </nav>
-      <div class="nav-cta">
-        <a href="gift-flow.html" class="btn btn-primary">Start a gift</a>
-      </div>
+        <!-- Header / Nav -->
+        <header>
+            <div class="wrap nav">
+                <div class="nav-left">
+                    <div class="logo-mark"></div>
+                    <a href="../index.html" class="logo-text">GiftBox</a>
+                </div>
+
+                <nav class="nav-links">
+                    <a href="../index.html#how">How it works</a>
+                    <a href="../index.html#types">Gift types</a>
+                    <a href="../pages/broker/brokers.html">Marketplace</a>
+                </nav>
+
+                <div class="nav-cta">
+                    <a href="../pages/gifter/gift-flow.html" class="btn btn-primary">
+                        Start a gift
+                    </a>
+                </div>
+            </div>
+        </header>
+
+
+        <!-- Marketplace -->
+        <main>
+            <section class="market-section">
+                <div class="wrap">
+
+                    <div class="section-header">
+                        <div class="market-header-eyebrow">GiftWealth Marketplace</div>
+                        <h1 class="market-header-title">Partner brokers powering demat-to-demat gifting.</h1>
+                        <p class="market-header-sub">
+                            GiftWealth orchestrates the gifting experience; SEBI-regulated brokers execute
+                            the actual demat transfers. This marketplace gives families choice, and brokers
+                            a new, relationship-first acquisition channel.
+                        </p>
+
+                        <div class="market-pill-row">
+                            <div class="market-pill">SEBI-regulated infrastructure</div>
+                            <div class="market-pill">Demat-to-demat transfers</div>
+                            <div class="market-pill">API-ready partners</div>
+                        </div>
+                    </div>
+
+                    <!-- Broker cards -->
+                    <div class="market-grid">
+
+                        <!-- Zerodha -->
+                        <article class="market-card">
+                            <header class="market-card-header">
+                                <div>
+                                    <div class="market-broker-name">Zerodha</div>
+                                    <div class="market-broker-meta">Discount broker · SEBI-registered</div>
+                                </div>
+                                <span class="market-badge">API-first</span>
+                            </header>
+                            <div class="market-card-body">
+                                Low-cost broker with strong APIs and a large retail base. Ideal for
+                                gifting direct equities and ETFs with transparent pricing.
+                                <div class="market-tag-row">
+                                    <span class="market-tag">Equities & ETFs</span>
+                                    <span class="market-tag">eDIS / CDSL</span>
+                                    <span class="market-tag">Retail scale</span>
+                                </div>
+                            </div>
+                        </article>
+
+                        <!-- Groww -->
+                        <article class="market-card">
+                            <header class="market-card-header">
+                                <div>
+                                    <div class="market-broker-name">Groww</div>
+                                    <div class="market-broker-meta">Retail-first · SEBI-registered</div>
+                                </div>
+                                <span class="market-badge">Beginner-friendly</span>
+                            </header>
+                            <div class="market-card-body">
+                                Simplified investing experience for first-time investors and families.
+                                Strong mutual fund and equity rails suitable for goal-based gifting.
+                                <div class="market-tag-row">
+                                    <span class="market-tag">Equity & MF</span>
+                                    <span class="market-tag">App-first</span>
+                                    <span class="market-tag">Young investors</span>
+                                </div>
+                            </div>
+                        </article>
+
+                        <!-- Upstox -->
+                        <article class="market-card">
+                            <header class="market-card-header">
+                                <div>
+                                    <div class="market-broker-name">Upstox</div>
+                                    <div class="market-broker-meta">Active traders · SEBI-registered</div>
+                                </div>
+                                <span class="market-badge">High-volume</span>
+                            </header>
+                            <div class="market-card-body">
+                                Suitable for families that already trade actively. Supports equities,
+                                F&O and more, with modern app and web experiences.
+                                <div class="market-tag-row">
+                                    <span class="market-tag">Equity & F&O</span>
+                                    <span class="market-tag">API integrations</span>
+                                    <span class="market-tag">Active users</span>
+                                </div>
+                            </div>
+                        </article>
+
+                        <!-- ICICI Direct -->
+                        <article class="market-card">
+                            <header class="market-card-header">
+                                <div>
+                                    <div class="market-broker-name">ICICI Direct</div>
+                                    <div class="market-broker-meta">Bank-linked · SEBI-registered</div>
+                                </div>
+                                <span class="market-badge">Full-service</span>
+                            </header>
+                            <div class="market-card-body">
+                                Bank-linked 3-in-1 accounts for families who prefer integrated banking
+                                and investing, with strong trust and advisory options.
+                                <div class="market-tag-row">
+                                    <span class="market-tag">3-in-1 accounts</span>
+                                    <span class="market-tag">Advisory</span>
+                                    <span class="market-tag">Family portfolios</span>
+                                </div>
+                            </div>
+                        </article>
+
+                        <!-- Angel One -->
+                        <article class="market-card">
+                            <header class="market-card-header">
+                                <div>
+                                    <div class="market-broker-name">Angel One</div>
+                                    <div class="market-broker-meta">Full-service · SEBI-registered</div>
+                                </div>
+                                <span class="market-badge">Pan-India</span>
+                            </header>
+                            <div class="market-card-body">
+                                A long-standing full-service broker with research, advisory and
+                                distribution reach, suitable for families outside metros as well.
+                                <div class="market-tag-row">
+                                    <span class="market-tag">Research & advisory</span>
+                                    <span class="market-tag">Tier-2 & Tier-3 reach</span>
+                                </div>
+                            </div>
+                        </article>
+
+                        <!-- HDFC Sky -->
+                        <article class="market-card">
+                            <header class="market-card-header">
+                                <div>
+                                    <div class="market-broker-name">HDFC Sky</div>
+                                    <div class="market-broker-meta">Bank-backed · SEBI-registered</div>
+                                </div>
+                                <span class="market-badge">Bank ecosystem</span>
+                            </header>
+                            <div class="market-card-body">
+                                New-age digital platform backed by a major bank. Ideal for customers
+                                who want wealth, banking and gifting under one umbrella.
+                                <div class="market-tag-row">
+                                    <span class="market-tag">Bank linkages</span>
+                                    <span class="market-tag">Digital-first</span>
+                                </div>
+                            </div>
+                        </article>
+
+                    </div>
+
+                    <!-- CTA band for brokers -->
+                    <div class="market-footer-band">
+                        <div>
+                            <div class="market-footer-title">Are you a SEBI-registered broker?</div>
+                            <div class="market-footer-sub">
+                                Join the GiftWealth Marketplace to receive compliant, intent-rich demat
+                                gifting flows from families. We integrate with existing rails — you
+                                remain the regulated execution and relationship owner.
+                            </div>
+                        </div>
+                        <div class="market-btn-row">
+                            <a href="mailto:partners@giftwealth.example" class="market-link-btn-primary">
+                                Apply to join GiftWealth Marketplace
+                            </a>
+                            <a href="gift-flow.html" class="market-link-btn">
+                                View the gifting experience
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer>
+            <div class="wrap footer-inner">
+                <div>© 2025 GiftBox / GiftWealth Marketplace. Brokers shown are conceptual placeholders.</div>
+                <div class="footer-links">
+                    <a href="index.html">Home</a>
+                    <a href="gift-flow.html">Start a gift</a>
+                </div>
+            </div>
+        </footer>
+
     </div>
-  </header>
-
-  <!-- Marketplace -->
-  <main>
-    <section class="market-section">
-      <div class="wrap">
-
-        <div class="section-header">
-          <div class="market-header-eyebrow">GiftWealth Marketplace</div>
-          <h1 class="market-header-title">Partner brokers powering demat-to-demat gifting.</h1>
-          <p class="market-header-sub">
-            GiftWealth orchestrates the gifting experience; SEBI-regulated brokers execute
-            the actual demat transfers. This marketplace gives families choice, and brokers
-            a new, relationship-first acquisition channel.
-          </p>
-
-          <div class="market-pill-row">
-            <div class="market-pill">SEBI-regulated infrastructure</div>
-            <div class="market-pill">Demat-to-demat transfers</div>
-            <div class="market-pill">API-ready partners</div>
-          </div>
-        </div>
-
-        <!-- Broker cards -->
-        <div class="market-grid">
-
-          <!-- Zerodha -->
-          <article class="market-card">
-            <header class="market-card-header">
-              <div>
-                <div class="market-broker-name">Zerodha</div>
-                <div class="market-broker-meta">Discount broker · SEBI-registered</div>
-              </div>
-              <span class="market-badge">API-first</span>
-            </header>
-            <div class="market-card-body">
-              Low-cost broker with strong APIs and a large retail base. Ideal for
-              gifting direct equities and ETFs with transparent pricing.
-              <div class="market-tag-row">
-                <span class="market-tag">Equities & ETFs</span>
-                <span class="market-tag">eDIS / CDSL</span>
-                <span class="market-tag">Retail scale</span>
-              </div>
-            </div>
-          </article>
-
-          <!-- Groww -->
-          <article class="market-card">
-            <header class="market-card-header">
-              <div>
-                <div class="market-broker-name">Groww</div>
-                <div class="market-broker-meta">Retail-first · SEBI-registered</div>
-              </div>
-              <span class="market-badge">Beginner-friendly</span>
-            </header>
-            <div class="market-card-body">
-              Simplified investing experience for first-time investors and families.
-              Strong mutual fund and equity rails suitable for goal-based gifting.
-              <div class="market-tag-row">
-                <span class="market-tag">Equity & MF</span>
-                <span class="market-tag">App-first</span>
-                <span class="market-tag">Young investors</span>
-              </div>
-            </div>
-          </article>
-
-          <!-- Upstox -->
-          <article class="market-card">
-            <header class="market-card-header">
-              <div>
-                <div class="market-broker-name">Upstox</div>
-                <div class="market-broker-meta">Active traders · SEBI-registered</div>
-              </div>
-              <span class="market-badge">High-volume</span>
-            </header>
-            <div class="market-card-body">
-              Suitable for families that already trade actively. Supports equities,
-              F&O and more, with modern app and web experiences.
-              <div class="market-tag-row">
-                <span class="market-tag">Equity & F&O</span>
-                <span class="market-tag">API integrations</span>
-                <span class="market-tag">Active users</span>
-              </div>
-            </div>
-          </article>
-
-          <!-- ICICI Direct -->
-          <article class="market-card">
-            <header class="market-card-header">
-              <div>
-                <div class="market-broker-name">ICICI Direct</div>
-                <div class="market-broker-meta">Bank-linked · SEBI-registered</div>
-              </div>
-              <span class="market-badge">Full-service</span>
-            </header>
-            <div class="market-card-body">
-              Bank-linked 3-in-1 accounts for families who prefer integrated banking
-              and investing, with strong trust and advisory options.
-              <div class="market-tag-row">
-                <span class="market-tag">3-in-1 accounts</span>
-                <span class="market-tag">Advisory</span>
-                <span class="market-tag">Family portfolios</span>
-              </div>
-            </div>
-          </article>
-
-          <!-- Angel One -->
-          <article class="market-card">
-            <header class="market-card-header">
-              <div>
-                <div class="market-broker-name">Angel One</div>
-                <div class="market-broker-meta">Full-service · SEBI-registered</div>
-              </div>
-              <span class="market-badge">Pan-India</span>
-            </header>
-            <div class="market-card-body">
-              A long-standing full-service broker with research, advisory and
-              distribution reach, suitable for families outside metros as well.
-              <div class="market-tag-row">
-                <span class="market-tag">Research & advisory</span>
-                <span class="market-tag">Tier-2 & Tier-3 reach</span>
-              </div>
-            </div>
-          </article>
-
-          <!-- HDFC Sky -->
-          <article class="market-card">
-            <header class="market-card-header">
-              <div>
-                <div class="market-broker-name">HDFC Sky</div>
-                <div class="market-broker-meta">Bank-backed · SEBI-registered</div>
-              </div>
-              <span class="market-badge">Bank ecosystem</span>
-            </header>
-            <div class="market-card-body">
-              New-age digital platform backed by a major bank. Ideal for customers
-              who want wealth, banking and gifting under one umbrella.
-              <div class="market-tag-row">
-                <span class="market-tag">Bank linkages</span>
-                <span class="market-tag">Digital-first</span>
-              </div>
-            </div>
-          </article>
-
-        </div>
-
-        <!-- CTA band for brokers -->
-        <div class="market-footer-band">
-          <div>
-            <div class="market-footer-title">Are you a SEBI-registered broker?</div>
-            <div class="market-footer-sub">
-              Join the GiftWealth Marketplace to receive compliant, intent-rich demat
-              gifting flows from families. We integrate with existing rails — you
-              remain the regulated execution and relationship owner.
-            </div>
-          </div>
-          <div class="market-btn-row">
-            <a href="mailto:partners@giftwealth.example" class="market-link-btn-primary">
-              Apply to join GiftWealth Marketplace
-            </a>
-            <a href="gift-flow.html" class="market-link-btn">
-              View the gifting experience
-            </a>
-          </div>
-        </div>
-
-      </div>
-    </section>
-  </main>
-
-  <!-- Footer -->
-  <footer>
-    <div class="wrap footer-inner">
-      <div>© 2025 GiftBox / GiftWealth Marketplace. Brokers shown are conceptual placeholders.</div>
-      <div class="footer-links">
-        <a href="index.html">Home</a>
-        <a href="gift-flow.html">Start a gift</a>
-      </div>
-    </div>
-  </footer>
-
-</div>
 </body>
 </html>
