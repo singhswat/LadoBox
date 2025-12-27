@@ -850,6 +850,57 @@ section {
         transform: translateY(-1px);
     }
 
+/* ===== Header CTA Base (SMALL) ===== */
+.nav-cta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+    /* Shared size for ALL header actions */
+    .nav-cta .btn,
+    .nav-cta .nav-signin {
+        height: 32px; /* 👈 smaller */
+        padding: 0 12px; /* 👈 tighter */
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px; /* 👈 smaller text */
+        font-weight: 600;
+        line-height: 1;
+        border-radius: 999px;
+        white-space: nowrap;
+    }
+
+/* Sign in (text, but same height) */
+.nav-signin {
+    color: #c7d2fe;
+    text-decoration: none;
+    padding: 0 8px; /* slightly lighter than buttons */
+}
+
+    .nav-signin:hover {
+        text-decoration: underline;
+    }
+
+/* Start a gift (primary) */
+.btn-gold {
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    color: #020617;
+    border: none;
+}
+
+/* Claim a gift (secondary / danger outline) */
+.btn-claim {
+    background: transparent;
+    color: #f87171;
+    border: 1px solid rgba(248,113,113,.6);
+}
+
+    .btn-claim:hover {
+        background: rgba(248,113,113,.1);
+    }
+
 /* ---------- CTA band ---------- */
 
 .cta-band {
