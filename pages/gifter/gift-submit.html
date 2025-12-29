@@ -112,61 +112,116 @@
                 event.preventDefault();
             }
 
-            // Prepare gift data from localStorage or use defaults
+            const statusMsg = document.getElementById('status-message');
+            const retryBtn = document.getElementById('retry-btn');
+            const loader = document.querySelector('.loader');
+
+            // Update status message
+            if (statusMsg) {
+                statusMsg.textContent = 'Submitting to database...';
+                statusMsg.style.color = 'var(--muted)';
+            }
+            if (retryBtn) {
+                retryBtn.style.display = 'none';
+            }
+
+            // Prepare gift data from localStorage - map to database schema
             const gift = {
-                sender_name: giftData.gifterName || 'Demo Sender',
-                sender_phone: giftData.gifterPhone || '9999999999',
-                recipient_name: giftData.recipientName || 'Demo Receiver',
-                recipient_phone: giftData.recipientPhone || '8888888888',
-                gift_type: giftData.giftType || 'stock',
-                gift_value: giftData.amount || 5000,
-                message: giftData.message || 'Happy Birthday!',
-                preferredStock: giftData.preferredStock || null
+                sender_phone: giftData.gifterPhone || null,
+                recipient_phone: giftData.recipientPhone || null,
+                gift_type: giftData.type || giftData.giftType || 'amount',
+                gift_value: parseFloat(giftData.amount) || 0,
+                message: giftData.message || null,
+                preferred_stock: giftData.preferredStock || null,
+                status: 'pending',
+                created_at: new Date().toISOString()
             };
 
+            // Validate required fields
+            if (!gift.sender_phone || !gift.recipient_phone) {
+                if (statusMsg) {
+                    statusMsg.textContent = 'Error: Missing required phone numbers. Please go back and fill all fields.';
+                    statusMsg.style.color = '#ef4444';
+                }
+                if (retryBtn) {
+                    retryBtn.style.display = 'inline-block';
+                }
+                return;
+            }
+
+            if (!gift.gift_value || gift.gift_value <= 0) {
+                if (statusMsg) {
+                    statusMsg.textContent = 'Error: Invalid gift amount. Please go back and enter a valid amount.';
+                    statusMsg.style.color = '#ef4444';
+                }
+                if (retryBtn) {
+                    retryBtn.style.display = 'inline-block';
+                }
+                return;
+            }
+
             try {
-                // Simulate API call with delay (for MVP demo)
-                // In production, replace this with actual API call
-                await new Promise((resolve, reject) => {
-                    // Simulate network delay
-                    setTimeout(() => {
-                        // For MVP, we'll simulate success
-                        // In production, uncomment the fetch code below
-                        resolve({ success: true, giftId: 'GFT' + Date.now() });
-                        
-                        /* Production code:
-                        fetch('/.netlify/functions/createGift', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify(gift)
-                        })
-                        .then(res => {
-                            if (!res.ok) {
-                                throw new Error('Failed to submit gift');
-                            }
-                            return res.json();
-                        })
-                        .then(data => resolve(data))
-                        .catch(err => reject(err));
-                        */
-                    }, 1500); // 1.5 second delay to show loading state
+                // Call the actual API
+                const response = await fetch('/.netlify/functions/createGift', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(gift)
                 });
 
-                // Save gift ID to localStorage for success page
-                const giftId = 'GFT' + Date.now();
-                localStorage.setItem("giftbox_gift_id", giftId);
+                const responseData = await response.json();
 
-                // Redirect to success page
-                window.location.href = 'gift-success.html';
+                if (!response.ok) {
+                    // Handle API error response
+                    const errorMessage = responseData.error || responseData.message || 'Failed to submit gift';
+                    throw new Error(errorMessage);
+                }
+
+                // Success - save gift ID to localStorage for success page
+                const giftId = responseData.id || responseData.giftId || 'GFT' + Date.now();
+                localStorage.setItem("giftbox_gift_id", giftId);
+                localStorage.setItem("giftbox_gift_data", JSON.stringify(responseData));
+
+                // Update status message
+                if (statusMsg) {
+                    statusMsg.textContent = 'Success! Redirecting...';
+                    statusMsg.style.color = 'var(--success)';
+                }
+
+                // Hide loader
+                if (loader) {
+                    loader.style.display = 'none';
+                }
+
+                // Redirect to success page after a brief delay
+                setTimeout(() => {
+                    window.location.href = 'gift-success.html';
+                }, 500);
 
             } catch (err) {
                 console.error('Gift submission error:', err);
-                const statusMsg = document.getElementById('status-message');
-                const retryBtn = document.getElementById('retry-btn');
+                
+                // Hide loader
+                if (loader) {
+                    loader.style.display = 'none';
+                }
+
+                // Show detailed error message
+                let errorText = 'Something went wrong while submitting your gift.';
+                
+                if (err.message) {
+                    if (err.message.includes('database') || err.message.includes('insert')) {
+                        errorText = 'Database error: ' + err.message;
+                    } else if (err.message.includes('network') || err.message.includes('fetch')) {
+                        errorText = 'Network error: Could not connect to server. Please check your connection.';
+                    } else {
+                        errorText = 'Error: ' + err.message;
+                    }
+                }
+
                 if (statusMsg) {
-                    statusMsg.textContent = 'Something went wrong while submitting your gift. Please try again later.';
+                    statusMsg.textContent = errorText;
                     statusMsg.style.color = '#ef4444';
                 }
                 if (retryBtn) {
