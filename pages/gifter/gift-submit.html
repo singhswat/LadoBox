@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <title>GiftBox � Submitting Gift</title>
+    <title>GiftBox — Submitting Gift</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <style>
@@ -99,17 +99,57 @@
             color: white;
             text-decoration: none;
             font-size: 14px;
+            cursor: pointer;
         }
     </style>
+
+    <script>
+        async function submitGift(event) {
+            event.preventDefault();
+
+            const gift = {
+                sender_name: 'Demo Sender',
+                sender_phone: '9999999999',
+                recipient_name: 'Demo Receiver',
+                recipient_phone: '8888888888',
+                gift_type: 'stock',
+                gift_value: 5000,
+                message: 'Happy Birthday!'
+            };
+
+            try {
+                const res = await fetch('/.netlify/functions/createGift', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(gift)
+                });
+
+                if (!res.ok) {
+                    throw new Error('Failed to submit gift');
+                }
+
+                const data = await res.json();
+                console.log('Gift created:', data);
+
+                // Redirect only AFTER success
+                window.location.href = 'gift-success.html';
+
+            } catch (err) {
+                console.error(err);
+                alert('Something went wrong while submitting your gift. Please try again.');
+            }
+        }
+    </script>
 </head>
 
 <body>
-
     <div class="wrap">
         <div class="panel">
 
             <h1>Submitting your gift</h1>
-            <p>We�re securely routing your gift to a SEBI-registered broker.</p>
+            <p>We’re securely routing your gift to a SEBI-registered broker.</p>
 
             <div class="loader"></div>
 
@@ -136,10 +176,11 @@
                 You will only be charged after the recipient is verified.
             </p>
 
-            <a href="gift-success.html" class="btn">Continue</a>
+            <a href="#" onclick="submitGift(event)" class="btn">
+                Continue
+            </a>
 
         </div>
     </div>
-
 </body>
 </html>

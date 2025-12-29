@@ -802,12 +802,174 @@ section {
     color: #e5e7eb;
 }
 
-/* Mobile */
+/* ================= MOBILE RESPONSIVE ================= */
+
+@media (max-width: 768px) {
+    /* Navigation - Mobile hamburger menu */
+    .nav {
+        position: relative;
+    }
+
+    .nav-toggle {
+        display: flex;
+    }
+
+    .nav-links {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: rgba(2, 6, 23, 0.98);
+        backdrop-filter: blur(22px);
+        border-bottom: 1px solid rgba(148, 163, 184, 0.35);
+        flex-direction: column;
+        padding: 16px 20px;
+        gap: 12px;
+        display: none;
+        margin-top: 14px;
+        z-index: 45;
+    }
+
+    .nav[data-menu-open="true"] .nav-links {
+        display: flex;
+    }
+
+    .nav-cta {
+        display: none;
+    }
+
+    .nav[data-menu-open="true"] .nav-cta {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        gap: 10px;
+        padding-top: 12px;
+        border-top: 1px solid rgba(148, 163, 184, 0.25);
+    }
+
+    .nav[data-menu-open="true"] .nav-cta .btn {
+        width: 100%;
+        justify-content: center;
+        font-size: 12px;
+        padding: 8px 16px;
+    }
+
+    .nav[data-menu-open="true"] .nav-signin {
+        margin-left: 0;
+        padding: 8px 0;
+    }
+
+    /* Hero - Stack grid on mobile */
+    .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+
+    .hero {
+        padding: 32px 0 40px;
+    }
+
+    .hero-title {
+        font-size: clamp(32px, 8vw, 40px);
+    }
+
+    .hero-ctas {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .hero-ctas .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .hero-stats {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .hero-stat {
+        min-width: auto;
+    }
+
+    /* Logo section */
+    .logos-inner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .logo-line {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    /* Steps - Stack on mobile */
+    .steps {
+        grid-template-columns: 1fr;
+    }
+
+    /* Section padding */
+    .section {
+        padding: 40px 0;
+    }
+
+    .section-title {
+        font-size: 20px;
+    }
+
+    /* Footer */
+    .footer-inner {
+        flex-direction: column;
+        gap: 12px;
+        align-items: flex-start;
+    }
+
+    .footer-links {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+}
+
 @media (max-width: 640px) {
+    .wrap {
+        padding: 0 16px;
+    }
+
     .trust-inner {
         flex-direction: column;
         align-items: flex-start;
         gap: 6px;
+    }
+
+    /* Hero card adjustments */
+    .hero-card {
+        padding: 14px;
+    }
+
+    .hero-card-footer {
+        grid-template-columns: 1fr;
+    }
+
+    /* Button text sizing */
+    .btn {
+        font-size: 12px;
+        padding: 6px 12px;
+    }
+
+    /* Review card */
+    .review-card {
+        padding: 20px;
+    }
+
+    .review-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .review-actions .btn {
+        width: 100%;
     }
 }
 
@@ -820,6 +982,38 @@ section {
 
     .nav-signin:hover {
         color: #bfdbfe;
+    }
+
+/* Hamburger menu toggle */
+.nav-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    z-index: 50;
+}
+
+    .nav-toggle span {
+        width: 24px;
+        height: 2px;
+        background: var(--fg);
+        border-radius: 2px;
+        transition: all 0.3s ease;
+    }
+
+    .nav-toggle[aria-expanded="true"] span:nth-child(1) {
+        transform: rotate(45deg) translate(6px, 6px);
+    }
+
+    .nav-toggle[aria-expanded="true"] span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .nav-toggle[aria-expanded="true"] span:nth-child(3) {
+        transform: rotate(-45deg) translate(6px, -6px);
     }
 
 .btn-red {

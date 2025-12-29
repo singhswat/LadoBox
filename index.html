@@ -18,6 +18,12 @@
                     <a href="/LadoBox/index.html" class="logo-text">GiftBox</a>
                 </div>
 
+                <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+
                 <nav class="nav-links">
                     <a href="#how">How it works</a>
                     <a href="#types">Gift types</a>
@@ -206,5 +212,30 @@
         </footer>
 
     </div>
+
+    <script>
+        // Mobile navigation toggle
+        const navToggle = document.querySelector('.nav-toggle');
+        const nav = document.querySelector('.nav');
+
+        if (navToggle) {
+            navToggle.addEventListener('click', () => {
+                const isOpen = navToggle.getAttribute('aria-expanded') === 'true';
+                navToggle.setAttribute('aria-expanded', !isOpen);
+                nav.setAttribute('data-menu-open', !isOpen);
+            });
+
+            // Close menu when clicking on a link
+            const navLinks = document.querySelector('.nav-links');
+            if (navLinks) {
+                navLinks.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        navToggle.setAttribute('aria-expanded', 'false');
+                        nav.setAttribute('data-menu-open', 'false');
+                    });
+                });
+            }
+        }
+    </script>
 </body>
 </html>
