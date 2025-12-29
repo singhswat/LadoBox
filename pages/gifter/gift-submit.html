@@ -19,6 +19,7 @@
             --border: rgba(148,163,184,.35);
             --accent: #6366f1;
             --success: #22c55e;
+            --error: #ef4444;
         }
 
         body {
@@ -90,9 +91,14 @@
             font-weight: 600;
         }
 
+        .error {
+            color: var(--error);
+            font-weight: 600;
+        }
+
         .btn {
             display: inline-block;
-            margin-top: 28px;
+            margin-top: 24px;
             padding: 10px 18px;
             border-radius: 999px;
             background: linear-gradient(135deg,#6366f1,#a855f7);
@@ -100,69 +106,26 @@
             text-decoration: none;
             font-size: 14px;
             cursor: pointer;
+            display: none;
         }
     </style>
 
     <script>
-        // Load gift data from localStorage
         const giftData = JSON.parse(localStorage.getItem("giftbox_gift")) || {};
 
-        async function submitGift(event) {
-            if (event) {
-                event.preventDefault();
-            }
-
-            const statusMsg = document.getElementById('status-message');
-            const retryBtn = document.getElementById('retry-btn');
-            const loader = document.querySelector('.loader');
-
-            // Update status message
-            if (statusMsg) {
-                statusMsg.textContent = 'Submitting to database...';
-                statusMsg.style.color = 'var(--muted)';
-            }
-            if (retryBtn) {
-                retryBtn.style.display = 'none';
-            }
-
-            // Prepare gift data from localStorage - map to database schema
+        async function submitGift() {
             const gift = {
-                sender_phone: giftData.gifterPhone || null,
-                recipient_phone: giftData.recipientPhone || null,
-                gift_type: giftData.type || giftData.giftType || 'amount',
-                gift_value: parseFloat(giftData.amount) || 0,
-                message: giftData.message || null,
-                preferred_stock: giftData.preferredStock || null,
-                status: 'pending',
-                created_at: new Date().toISOString()
+                sender_name: giftData.gifterName || 'Demo Sender',
+                sender_phone: giftData.gifterPhone || '9999999999',
+                recipient_name: giftData.recipientName || 'Demo Receiver',
+                recipient_phone: giftData.recipientPhone || '8888888888',
+                gift_type: giftData.giftType || 'stock',
+                gift_value: giftData.amount || 5000,
+                message: giftData.message || 'Happy Birthday!'
             };
 
-            // Validate required fields
-            if (!gift.sender_phone || !gift.recipient_phone) {
-                if (statusMsg) {
-                    statusMsg.textContent = 'Error: Missing required phone numbers. Please go back and fill all fields.';
-                    statusMsg.style.color = '#ef4444';
-                }
-                if (retryBtn) {
-                    retryBtn.style.display = 'inline-block';
-                }
-                return;
-            }
-
-            if (!gift.gift_value || gift.gift_value <= 0) {
-                if (statusMsg) {
-                    statusMsg.textContent = 'Error: Invalid gift amount. Please go back and enter a valid amount.';
-                    statusMsg.style.color = '#ef4444';
-                }
-                if (retryBtn) {
-                    retryBtn.style.display = 'inline-block';
-                }
-                return;
-            }
-
             try {
-                // Call the actual API
-                const response = await fetch('/.netlify/functions/createGift', {
+                const res = await fetch('/.netlify/functions/createGift', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -170,72 +133,32 @@
                     body: JSON.stringify(gift)
                 });
 
-                const responseData = await response.json();
-
-                if (!response.ok) {
-                    // Handle API error response
-                    const errorMessage = responseData.error || responseData.message || 'Failed to submit gift';
-                    throw new Error(errorMessage);
+                if (!res.ok) {
+                    const text = await res.text();
+                    throw new Error(text);
                 }
 
-                // Success - save gift ID to localStorage for success page
-                const giftId = responseData.id || responseData.giftId || 'GFT' + Date.now();
-                localStorage.setItem("giftbox_gift_id", giftId);
-                localStorage.setItem("giftbox_gift_data", JSON.stringify(responseData));
+                const data = await res.json();
+                console.log('Gift inserted:', data);
 
-                // Update status message
-                if (statusMsg) {
-                    statusMsg.textContent = 'Success! Redirecting...';
-                    statusMsg.style.color = 'var(--success)';
-                }
+                localStorage.setItem("giftbox_gift_id", data.id);
 
-                // Hide loader
-                if (loader) {
-                    loader.style.display = 'none';
-                }
-
-                // Redirect to success page after a brief delay
-                setTimeout(() => {
-                    window.location.href = 'gift-success.html';
-                }, 500);
+                window.location.href = 'gift-success.html';
 
             } catch (err) {
-                console.error('Gift submission error:', err);
-                
-                // Hide loader
-                if (loader) {
-                    loader.style.display = 'none';
-                }
+                console.error(err);
 
-                // Show detailed error message
-                let errorText = 'Something went wrong while submitting your gift.';
-                
-                if (err.message) {
-                    if (err.message.includes('database') || err.message.includes('insert')) {
-                        errorText = 'Database error: ' + err.message;
-                    } else if (err.message.includes('network') || err.message.includes('fetch')) {
-                        errorText = 'Network error: Could not connect to server. Please check your connection.';
-                    } else {
-                        errorText = 'Error: ' + err.message;
-                    }
-                }
+                document.getElementById('status-message').textContent =
+                    'Submission failed. Please retry.';
+                document.getElementById('status-message').className = 'error';
 
-                if (statusMsg) {
-                    statusMsg.textContent = errorText;
-                    statusMsg.style.color = '#ef4444';
-                }
-                if (retryBtn) {
-                    retryBtn.style.display = 'inline-block';
-                }
+                document.getElementById('retry-btn').style.display = 'inline-block';
+                document.querySelector('.loader').style.display = 'none';
             }
         }
 
-        // Auto-submit when page loads
         window.addEventListener('DOMContentLoaded', () => {
-            // Auto-submit after a short delay to show the loading state
-            setTimeout(() => {
-                submitGift();
-            }, 500);
+            setTimeout(submitGift, 500);
         });
     </script>
 </head>
@@ -268,15 +191,11 @@
                 </div>
             </div>
 
-            <p style="margin-top:20px">
-                You will only be charged after the recipient is verified.
+            <p id="status-message" style="margin-top:20px">
+                Submitting…
             </p>
 
-            <p id="status-message" style="margin-top: 16px; color: var(--muted); font-size: 13px;">
-                Submitting...
-            </p>
-
-            <a href="#" onclick="submitGift(event)" class="btn" id="retry-btn" style="display: none;">
+            <a href="#" onclick="submitGift()" class="btn" id="retry-btn">
                 Retry Submission
             </a>
 

@@ -1,147 +1,53 @@
-import { createClient } from '@supabase/supabase-js';
-
-const supabase = createClient(
-    process.env.SUPABASE_URL,
-    process.env.SUPABASE_ANON_KEY
-);
-
 export const handler = async (event) => {
-    // Handle CORS preflight
-    if (event.httpMethod === 'OPTIONS') {
-        return {
-            statusCode: 200,
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Headers': 'Content-Type',
-                'Access-Control-Allow-Methods': 'POST, OPTIONS'
-            },
-            body: ''
-        };
-    }
-
     if (event.httpMethod !== 'POST') {
-        return {
-            statusCode: 405,
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ error: 'Method Not Allowed' })
-        };
-    }
-
-    // Check if Supabase credentials are configured
-    if (!process.env.SUPABASE_URL || !process.env.SUPABASE_ANON_KEY) {
-        console.error('Missing Supabase environment variables');
-        return {
-            statusCode: 500,
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ 
-                error: 'Server configuration error: Database credentials not configured' 
-            })
-        };
+        return { statusCode: 405, body: 'Method Not Allowed' };
     }
 
     try {
-        const payload = JSON.parse(event.body);
+        const body = JSON.parse(event.body || '{}');
 
-        // Validate required fields
-        if (!payload.sender_phone || !payload.recipient_phone) {
-            return {
-                statusCode: 400,
+        const payload = {
+            sender_name: body.sender_name || 'Unknown Sender',
+            sender_phone: body.sender_phone || null,
+            recipient_name: body.recipient_name || 'Unknown Recipient',
+            recipient_phone: body.recipient_phone || '0000000000',
+            gift_type: body.gift_type || 'stock',
+            gift_value: body.gift_value || 0,
+            message: body.message || null
+        };
+
+        const response = await fetch(
+            `${process.env.SUPABASE_URL}/rest/v1/gifts`,
+            {
+                method: 'POST',
                 headers: {
-                    'Access-Control-Allow-Origin': '*',
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'apikey': process.env.SUPABASE_ANON_KEY,
+                    'Authorization': `Bearer ${process.env.SUPABASE_ANON_KEY}`,
+                    'Prefer': 'return=representation'
                 },
-                body: JSON.stringify({ 
-                    error: 'Missing required fields: sender_phone and recipient_phone are required' 
-                })
-            };
-        }
-
-        if (!payload.gift_value || payload.gift_value <= 0) {
-            return {
-                statusCode: 400,
-                headers: {
-                    'Access-Control-Allow-Origin': '*',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ 
-                    error: 'Invalid gift_value: Must be greater than 0' 
-                })
-            };
-        }
-
-        // Insert into database
-        const { data, error } = await supabase
-            .from('gifts')
-            .insert(payload)
-            .select()
-            .single();
-
-        if (error) {
-            console.error('Supabase error:', error);
-            
-            // Provide more specific error messages
-            let errorMessage = 'Database insert failed';
-            
-            if (error.code === '23505') {
-                errorMessage = 'Duplicate entry: This gift already exists';
-            } else if (error.code === '23503') {
-                errorMessage = 'Foreign key constraint failed: Invalid reference';
-            } else if (error.code === '23502') {
-                errorMessage = 'Required field missing: ' + error.message;
-            } else if (error.message) {
-                errorMessage = 'Database error: ' + error.message;
+                body: JSON.stringify(payload)
             }
+        );
 
-            return {
-                statusCode: 500,
-                headers: {
-                    'Access-Control-Allow-Origin': '*',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ 
-                    error: errorMessage,
-                    details: error.message,
-                    code: error.code
-                })
-            };
+        if (!response.ok) {
+            const text = await response.text();
+            throw new Error(text);
         }
+
+        const data = await response.json();
 
         return {
             statusCode: 200,
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data),
+            body: JSON.stringify(data[0])
         };
 
     } catch (err) {
-        console.error('Function error:', err);
-        
-        let errorMessage = 'Failed to process gift submission';
-        
-        if (err instanceof SyntaxError) {
-            errorMessage = 'Invalid JSON in request body';
-        } else if (err.message) {
-            errorMessage = err.message;
-        }
+        console.error('Insert failed:', err);
 
         return {
             statusCode: 500,
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ 
-                error: errorMessage,
-                message: err.message || 'Unknown error'
-            }),
+            body: JSON.stringify({ error: err.message })
         };
     }
 };
