@@ -104,43 +104,84 @@
     </style>
 
     <script>
-        async function submitGift(event) {
-            event.preventDefault();
+        // Load gift data from localStorage
+        const giftData = JSON.parse(localStorage.getItem("giftbox_gift")) || {};
 
+        async function submitGift(event) {
+            if (event) {
+                event.preventDefault();
+            }
+
+            // Prepare gift data from localStorage or use defaults
             const gift = {
-                sender_name: 'Demo Sender',
-                sender_phone: '9999999999',
-                recipient_name: 'Demo Receiver',
-                recipient_phone: '8888888888',
-                gift_type: 'stock',
-                gift_value: 5000,
-                message: 'Happy Birthday!'
+                sender_name: giftData.gifterName || 'Demo Sender',
+                sender_phone: giftData.gifterPhone || '9999999999',
+                recipient_name: giftData.recipientName || 'Demo Receiver',
+                recipient_phone: giftData.recipientPhone || '8888888888',
+                gift_type: giftData.giftType || 'stock',
+                gift_value: giftData.amount || 5000,
+                message: giftData.message || 'Happy Birthday!',
+                preferredStock: giftData.preferredStock || null
             };
 
             try {
-                const res = await fetch('/.netlify/functions/createGift', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(gift)
+                // Simulate API call with delay (for MVP demo)
+                // In production, replace this with actual API call
+                await new Promise((resolve, reject) => {
+                    // Simulate network delay
+                    setTimeout(() => {
+                        // For MVP, we'll simulate success
+                        // In production, uncomment the fetch code below
+                        resolve({ success: true, giftId: 'GFT' + Date.now() });
+                        
+                        /* Production code:
+                        fetch('/.netlify/functions/createGift', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(gift)
+                        })
+                        .then(res => {
+                            if (!res.ok) {
+                                throw new Error('Failed to submit gift');
+                            }
+                            return res.json();
+                        })
+                        .then(data => resolve(data))
+                        .catch(err => reject(err));
+                        */
+                    }, 1500); // 1.5 second delay to show loading state
                 });
 
-                if (!res.ok) {
-                    throw new Error('Failed to submit gift');
-                }
+                // Save gift ID to localStorage for success page
+                const giftId = 'GFT' + Date.now();
+                localStorage.setItem("giftbox_gift_id", giftId);
 
-                const data = await res.json();
-                console.log('Gift created:', data);
-
-                // Redirect only AFTER success
+                // Redirect to success page
                 window.location.href = 'gift-success.html';
 
             } catch (err) {
-                console.error(err);
-                alert('Something went wrong while submitting your gift. Please try again.');
+                console.error('Gift submission error:', err);
+                const statusMsg = document.getElementById('status-message');
+                const retryBtn = document.getElementById('retry-btn');
+                if (statusMsg) {
+                    statusMsg.textContent = 'Something went wrong while submitting your gift. Please try again later.';
+                    statusMsg.style.color = '#ef4444';
+                }
+                if (retryBtn) {
+                    retryBtn.style.display = 'inline-block';
+                }
             }
         }
+
+        // Auto-submit when page loads
+        window.addEventListener('DOMContentLoaded', () => {
+            // Auto-submit after a short delay to show the loading state
+            setTimeout(() => {
+                submitGift();
+            }, 500);
+        });
     </script>
 </head>
 
@@ -176,8 +217,12 @@
                 You will only be charged after the recipient is verified.
             </p>
 
-            <a href="#" onclick="submitGift(event)" class="btn">
-                Continue
+            <p id="status-message" style="margin-top: 16px; color: var(--muted); font-size: 13px;">
+                Submitting...
+            </p>
+
+            <a href="#" onclick="submitGift(event)" class="btn" id="retry-btn" style="display: none;">
+                Retry Submission
             </a>
 
         </div>
