@@ -2,103 +2,114 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <title>Claim Your Gift</title>
+    <title>GiftBox — Claim Your Gift</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <style>
         body {
-            font-family: system-ui;
-            background: radial-gradient(circle at top,#111827,#020617);
+            font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+            background: radial-gradient(circle at top, #111827 0, #020617 55%);
             color: #f7f7ff;
             display: flex;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
+            margin: 0;
         }
 
         .card {
-            background: rgba(15,23,42,.95);
+            background: rgba(15,23,42,.92);
             border: 1px solid rgba(148,163,184,.35);
-            border-radius: 20px;
-            padding: 36px;
-            max-width: 420px;
-            text-align: center;
+            border-radius: 24px;
+            padding: 42px;
+            max-width: 520px;
+            width: 100%;
+            box-shadow: 0 18px 45px rgba(15,23,42,.65);
         }
 
         h1 {
-            margin-bottom: 10px;
+            text-align: center;
+            margin-bottom: 12px;
+            font-size: 22px;
         }
 
         p {
-            color: #9ca3af;
+            text-align: center;
+            color: #cbd5f5;
             font-size: 14px;
+            margin-bottom: 26px;
+            line-height: 1.6;
         }
 
+        label {
+            font-size: 13px;
+            color: #e5e7eb;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 12px;
+            border: 1px solid rgba(148,163,184,.35);
+            background: rgba(2,6,23,.8);
+            color: #f7f7ff;
+            font-size: 14px;
+            outline: none;
+        }
+
+            input::placeholder {
+                color: #9ca3af;
+            }
+
         .btn {
-            margin-top: 20px;
-            padding: 10px 20px;
+            width: 100%;
+            margin-top: 22px;
+            padding: 12px;
             border-radius: 999px;
             background: linear-gradient(135deg,#6366f1,#a855f7);
             color: white;
+            font-size: 14px;
             border: none;
             cursor: pointer;
         }
 
-        .error {
-            color: #ef4444;
+        .note {
+            font-size: 12px;
+            color: #9ca3af;
+            text-align: center;
+            margin-top: 18px;
+            line-height: 1.5;
         }
     </style>
 </head>
 
 <body>
+
     <div class="card">
-        <h1>🎁 You’ve received a gift</h1>
-        <p id="status">Validating gift…</p>
-        <button class="btn" id="claimBtn" style="display:none">Claim Gift</button>
+        <h1>Claim your gift</h1>
+
+        <p>
+            Enter the mobile number where you received the gift notification.
+            This helps us verify and securely release your gift.
+        </p>
+
+        <label for="phone">Mobile number</label>
+        <input id="phone"
+               type="tel"
+               placeholder="+91 9XXXXXXXXX"
+               required />
+
+        <button class="btn">
+            Continue
+        </button>
+
+        <div class="note">
+            We’ll send a one-time password (OTP) to verify your number.<br />
+            Gift details are revealed only after verification.
+        </div>
     </div>
 
-    <script>
-        const params = new URLSearchParams(window.location.search);
-        const token = params.get('token');
-
-        const statusEl = document.getElementById('status');
-        const claimBtn = document.getElementById('claimBtn');
-
-        async function validateToken() {
-            const res = await fetch(
-                `${window.location.origin}/.netlify/functions/validateClaim?token=${token}`
-            );
-
-            if (!res.ok) {
-                statusEl.textContent = 'Invalid or expired link.';
-                statusEl.className = 'error';
-                return;
-            }
-
-            statusEl.textContent = 'Gift ready to be claimed.';
-            claimBtn.style.display = 'inline-block';
-        }
-
-        claimBtn.onclick = async () => {
-            const res = await fetch(
-                `${window.location.origin}/.netlify/functions/claimGift`,
-                {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ token })
-                }
-            );
-
-            if (!res.ok) {
-                statusEl.textContent = 'Failed to claim gift.';
-                statusEl.className = 'error';
-                return;
-            }
-
-            window.location.href = 'claim-success.html';
-        };
-
-        validateToken();
-    </script>
 </body>
 </html>

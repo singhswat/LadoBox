@@ -46,20 +46,21 @@
         }
 
         p {
-            color: #9ca3af;
+            color: #cbd5f5;
             font-size: 14px;
-            margin-bottom: 24px;
+            margin-bottom: 26px;
             line-height: 1.6;
         }
 
-        .note {
+        .info {
             font-size: 13px;
-            color: #cbd5f5;
-            background: rgba(99,102,241,.12);
-            border: 1px solid rgba(99,102,241,.25);
-            padding: 12px 14px;
-            border-radius: 12px;
+            color: #e5e7eb;
+            background: rgba(30,41,59,.7);
+            border: 1px solid rgba(148,163,184,.35);
+            padding: 14px 16px;
+            border-radius: 14px;
             margin-bottom: 28px;
+            text-align: left;
         }
 
         .actions {
@@ -94,23 +95,23 @@
         <h1>Gift submitted successfully</h1>
 
         <p>
-            Your gift has been securely registered and shared with a regulated broker.<br />
-            The recipient will be notified to claim and execute the gift.
+            Your gift has been securely registered and forwarded to a regulated broker
+            for execution during applicable market hours.
         </p>
 
-        <!--<div class="note">
-            <strong>Demo mode:</strong><br />
-            For testing, you can manually open the receiver flow below.
-            In production, this step happens via WhatsApp / SMS with verification.
-        </div>-->
+        <div class="info">
+            <strong>What happens next</strong><br />
+            • The recipient receives a secure claim link via WhatsApp / SMS<br />
+            • Identity verification and broker onboarding (if required)<br />
+            • Execution as per broker SLA and market availability<br />
+            • Confirmation shared once execution is completed
+        </div>
 
         <div class="actions">
-            <!-- Test Receiver Flow Entry -->
-            <!--<a href="../receiver/claim-gift.html" class="btn">
-                Test receiver flow (demo)
-            </a>-->
+            <a href="gift-status.html" class="btn">
+                Track this gift
+            </a>
 
-            <!-- Secondary actions -->
             <a href="index.html" class="btn btn-secondary">
                 GiftBox Home
             </a>
